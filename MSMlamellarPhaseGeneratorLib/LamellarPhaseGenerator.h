@@ -3,5 +3,6 @@
 
 class LammelarPhaseGenerator : public Simulation
 {
+	Space *secondPhaseSpace;
 	
 };
