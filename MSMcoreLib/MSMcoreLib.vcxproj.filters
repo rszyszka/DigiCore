@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Enums">
+      <UniqueIdentifier>{d32241dc-fb84-4c8b-a5f1-85915f444a65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Neighborhood">
+      <UniqueIdentifier>{a6e5c78a-029d-49f3-84cf-dfbbf4c14e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Neighborhood\2D">
+      <UniqueIdentifier>{f447e0e4-2195-475f-9827-4f7b2bf2e835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Neighborhood\3D">
+      <UniqueIdentifier>{86ed236d-3eee-48d8-8243-a69ba0d81e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Neighborhood">
+      <UniqueIdentifier>{12aa0ebd-1c48-4e8f-b031-6baa53e34ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Neighborhood\2D">
+      <UniqueIdentifier>{86617e14-fd6b-4e38-9230-0854eb98bd15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Neighborhood\3D">
+      <UniqueIdentifier>{d497882e-5eb0-4e23-8871-5925a585e90d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BoundaryConditions.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationType.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Phase.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CellSrx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Space.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UniquePointGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood.h">
+      <Filter>Header Files\Neighborhood</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood2D.h">
+      <Filter>Header Files\Neighborhood\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood2DCircular.h">
+      <Filter>Header Files\Neighborhood\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood2DHexagonal.h">
+      <Filter>Header Files\Neighborhood\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood2DMoore.h">
+      <Filter>Header Files\Neighborhood\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood2DPentagonal.h">
+      <Filter>Header Files\Neighborhood\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood2DVonNeumann.h">
+      <Filter>Header Files\Neighborhood\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood3D.h">
+      <Filter>Header Files\Neighborhood\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood3DCircular.h">
+      <Filter>Header Files\Neighborhood\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood3DHexagonal.h">
+      <Filter>Header Files\Neighborhood\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood3DMoore.h">
+      <Filter>Header Files\Neighborhood\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood3DPentagonal.h">
+      <Filter>Header Files\Neighborhood\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Neighborhood3DVonNeumann.h">
+      <Filter>Header Files\Neighborhood\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="IOStreamer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NeighborhoodType.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="NucleonsGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CellSrx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Space.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniquePointGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood.cpp">
+      <Filter>Source Files\Neighborhood</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood2D.cpp">
+      <Filter>Source Files\Neighborhood\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood2DCircular.cpp">
+      <Filter>Source Files\Neighborhood\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood2DHexagonal.cpp">
+      <Filter>Source Files\Neighborhood\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood2DMoore.cpp">
+      <Filter>Source Files\Neighborhood\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood2DPentagonal.cpp">
+      <Filter>Source Files\Neighborhood\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood2DVonNeumann.cpp">
+      <Filter>Source Files\Neighborhood\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood3D.cpp">
+      <Filter>Source Files\Neighborhood\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood3DCircular.cpp">
+      <Filter>Source Files\Neighborhood\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood3DHexagonal.cpp">
+      <Filter>Source Files\Neighborhood\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood3DMoore.cpp">
+      <Filter>Source Files\Neighborhood\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood3DPentagonal.cpp">
+      <Filter>Source Files\Neighborhood\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Neighborhood3DVonNeumann.cpp">
+      <Filter>Source Files\Neighborhood\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="IOStreamer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NucleonsGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>

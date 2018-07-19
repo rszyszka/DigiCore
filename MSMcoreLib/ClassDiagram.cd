@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Neighborhood">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAEAgAAAAAAAAAAAAgEIAAAIAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Neighborhood.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood2D">
+    <Position X="5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAEAAAAAAAgAAAAEAAEAAAAACAA=</HashCode>
+      <FileName>Neighborhood2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood2DCircular">
+    <Position X="1.25" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAACAAAAAAAAAAAAAAAAAAgAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Neighborhood2DCircular.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood2DHexagonal">
+    <Position X="6" Y="6.75" Width="2" />
+    <InheritanceLine Type="Neighborhood2D" ManuallyRouted="true">
+      <Path>
+        <Point X="5.75" Y="3.704" />
+        <Point X="5.75" Y="6.36" />
+        <Point X="7" Y="6.36" />
+        <Point X="7" Y="6.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAAABA=</HashCode>
+      <FileName>Neighborhood2DHexagonal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood2DMoore">
+    <Position X="3.5" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Neighborhood2DMoore.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood2DPentagonal">
+    <Position X="3.5" Y="6.75" Width="2" />
+    <InheritanceLine Type="Neighborhood2D" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="3.704" />
+        <Point X="5.75" Y="6.375" />
+        <Point X="4.25" Y="6.375" />
+        <Point X="4.25" Y="6.75" />
+      </Path>
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.05" Y="0.079" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAABA=</HashCode>
+      <FileName>Neighborhood2DPentagonal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood2DVonNeumann">
+    <Position X="1.25" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Neighborhood2DVonNeumann.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood3D">
+    <Position X="9.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAEAAAAAAAgAAAAEAAEAAAAAEBA=</HashCode>
+      <FileName>Neighborhood3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood3DCircular">
+    <Position X="8.5" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>kAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Neighborhood3DCircular.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood3DHexagonal">
+    <Position X="13" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAABA=</HashCode>
+      <FileName>Neighborhood3DHexagonal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood3DMoore">
+    <Position X="13" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Neighborhood3DMoore.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood3DPentagonal">
+    <Position X="10.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAABA=</HashCode>
+      <FileName>Neighborhood3DPentagonal.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neighborhood3DVonNeumann">
+    <Position X="10.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Neighborhood3DVonNeumann.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
