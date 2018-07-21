@@ -29,6 +29,9 @@
   <ItemGroup>
     <ClInclude Include="LamellarPhaseGenerator.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LamellarPhaseGenerator.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{218A193D-E550-4C8A-9118-DC8671EA11B0}</ProjectGuid>

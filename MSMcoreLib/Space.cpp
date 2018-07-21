@@ -6,6 +6,7 @@ using namespace std;
 
 Space::Space()
 {
+	initializeCells();
 }
 
 Space::~Space()
