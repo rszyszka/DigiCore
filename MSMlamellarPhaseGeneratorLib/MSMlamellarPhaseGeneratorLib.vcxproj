@@ -27,9 +27,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Grain.h" />
     <ClInclude Include="LamellarPhaseGenerator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Grain.cpp" />
     <ClCompile Include="LamellarPhaseGenerator.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

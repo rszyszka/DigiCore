@@ -18,3 +18,5 @@ bool LamellarPhaseGenerator::performStep()
 
 	return false;
 }
+
+vector<Grain> LamellarPhaseGenerator::getGrainsAngles() { return vector<Grain>(); }
