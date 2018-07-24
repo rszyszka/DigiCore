@@ -1,4 +1,5 @@
 #include "Grain.h"
+#include <cmath>
 
 Grain::Grain() {
 	childTwins = 0;

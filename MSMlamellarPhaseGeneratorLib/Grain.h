@@ -2,12 +2,16 @@
 
 class Grain {
 private:
+
+	const double pi = acos(-1.0);
+
 	double angle1;
 	double angle2;
 	double angle3;
 	double twinAngleX;
 	int twinInside;
 	unsigned int childTwins;
+
 public:
 	
 	__declspec(dllexport) Grain();
