@@ -10,10 +10,11 @@ private:
 	double angle3;
 	double twinAngleX;
 	int twinInside;
-	unsigned int childTwins;
 
 public:
 	
+	unsigned int childTwins;
+
 	__declspec(dllexport) Grain();
 	__declspec(dllexport) ~Grain();
 	__declspec(dllexport) void setAngle1(double);
@@ -29,7 +30,4 @@ public:
 
 	__declspec(dllexport) void setTwinInside(int);
 	__declspec(dllexport) int getTwinInside();
-
-	__declspec(dllexport) void setChildTwins(unsigned int);
-	__declspec(dllexport) unsigned int getChildTwins();
 };

@@ -19,8 +19,47 @@ LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space) : Simulation(space
 bool LamellarPhaseGenerator::performStep()
 {
 	double alpha = (rand() % 180) * pi / 180.0;
-	//TODO
+	
+	Grain a;
+	while (grainsAngles[grainIndex].childTwins < 3) {
+		twinsAngles.push_back(a);
+		grainsAngles[grainIndex].childTwins++;
 
+		if (grainsAngles[grainIndex].childTwins == 1) {
+			grainsAngles[grainIndex].setTwinAngleX(alpha);
+			grainsAngles[grainIndex].setTwinInside(twinsAngles.size() - 1);
+			computeAngles(alpha, grainIndex, twinsAngles.size() - 1);//compute angles
+		}
+		else {
+			int tID, tNewID;
+			tNewID = twinsAngles.size() - 1;
+			tID = grainsAngles[grainIndex].getTwinInside();
+			double ang;
+
+			ang = this->twinsAngles[tID].getAngle1();
+			this->twinsAngles[tNewID].setAngle1(ang);
+
+			ang = this->twinsAngles[tID].getAngle2();
+			this->twinsAngles[tNewID].setAngle2(ang);
+
+			ang = this->twinsAngles[tID].getAngle3();
+			this->twinsAngles[tNewID].setAngle3(ang);
+		}
+
+		int x1, x2, y1, y2, z1, z2;
+
+		x1 = getLimitX1(grainIndex);
+		x2 = getLimitX2(grainIndex);
+		y1 = getLimitY1(grainIndex);
+		y2 = getLimitY2(grainIndex);
+		z1 = getLimitZ1(grainIndex);
+		z2 = getLimitZ2(grainIndex);
+
+		if (this->getSpace()->getBoundaryConditions() == BoundaryConditions(Periodic)) {
+			//TODO
+		}
+
+	}
 	return false;
 }
 
@@ -123,6 +162,179 @@ void LamellarPhaseGenerator::computeAngles(double alpha, int grainId, int twinId
 	this->twinsAngles[twinId].setAngle3(phi[3]);
 }
 
+int LamellarPhaseGenerator::getLimitX1(int grainIndex)
+{
+	for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return i;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int LamellarPhaseGenerator::getLimitX2(int grainIndex)
+{
+	for (int i = this->getSpace()->getXsize() - 1; i >= 0; --i) {
+		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return i;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int LamellarPhaseGenerator::getLimitY1(int grainIndex)
+{
+	for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return j;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int LamellarPhaseGenerator::getLimitY2(int grainIndex)
+{
+	for (int j = this->getSpace()->getYsize() - 1; j >= 0; --j) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return j;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int LamellarPhaseGenerator::getLimitZ1(int grainIndex)
+{
+	for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return k;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int LamellarPhaseGenerator::getLimitZ2(int grainIndex)
+{
+	for (int k = this->getSpace()->getZsize() - 1; k >= 0; --k) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return k;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int LamellarPhaseGenerator::getLimitX1P(int grainIndex)
+{
+	for (int i = this->getSpace()->getXsize() / 2; i < this->getSpace()->getXsize(); ++i) {
+		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return i;
+				}
+			}
+		}
+	}
+
+	return getLimitX1(grainIndex);
+}
+
+int LamellarPhaseGenerator::getLimitX1P(int grainIndex)
+{
+	for (int i = this->getSpace()->getXsize() / 2; i >= 0; --i) {
+		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return i;
+				}
+			}
+		}
+	}
+
+	return getLimitX2(grainIndex);
+}
+
+int LamellarPhaseGenerator::getLimitY1P(int grainIndex)
+{
+	for (int j = this->getSpace()->getYsize() / 2; j < this->getSpace()->getYsize(); ++j) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return j;
+				}
+			}
+		}
+	}
+
+	return getLimitY1(grainIndex);
+}
+
+int LamellarPhaseGenerator::getLimitY2P(int grainIndex)
+{
+	for (int j = this->getSpace()->getYsize() / 2; j >= 0; --j) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return j;
+				}
+			}
+		}
+	}
+
+	return getLimitY2(grainIndex);
+}
+
+int LamellarPhaseGenerator::getLimitZ1P(int grainIndex)
+{
+	for (int k = this->getSpace()->getZsize() / 2; k < this->getSpace()->getZsize(); ++k) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return k;
+				}
+			}
+		}
+	}
+
+	return getLimitZ1(grainIndex);
+}
+
+int LamellarPhaseGenerator::getLimitZ2P(int grainIndex)
+{
+	for (int k = this->getSpace()->getZsize() / 2; k >= 0; --k) {
+		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
+			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
+				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+					return k;
+				}
+			}
+		}
+	}
+
+	return getLimitZ1(grainIndex);
+}
 
 void LamellarPhaseGenerator::KQ4_eul(double r[5], double ang[4]) {
 
