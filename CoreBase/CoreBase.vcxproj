@@ -106,11 +106,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)MSMgrainGrowthLib;$(SolutionDir)MSMcoreLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)MSMgrainGrowthLib;$(SolutionDir)MSMcoreLib;$(SolutionDir)MSMlamellarPhaseGeneratorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)MSMgrainGrowthLib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -170,6 +171,9 @@
     </ProjectReference>
     <ProjectReference Include="..\MSMgrainGrowthLib\MSMgrainGrowthLib.vcxproj">
       <Project>{a4f25354-2714-4ca5-b28d-70ad447423b7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MSMlamellarPhaseGeneratorLib\MSMlamellarPhaseGeneratorLib.vcxproj">
+      <Project>{218a193d-e550-4c8a-9118-dc8671ea11b0}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

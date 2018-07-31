@@ -1,7 +1,7 @@
 #include "Grain.h"
 #include <cmath>
 
-Grain::Grain() {
+Grain::Grain(): pi(acos(-1.0)) {
 	childTwins = 0;
 }
 
@@ -19,6 +19,3 @@ double Grain::getTwinAngleX() { return twinAngleX; }
 
 void Grain::setTwinInside(int twinInside) { this->twinInside = twinInside; }
 int Grain::getTwinInside() { return twinInside; }
-
-void Grain::setChildTwins(unsigned int childTwins) { this->childTwins = childTwins; }
-unsigned int Grain::getChildTwins() { return childTwins; }

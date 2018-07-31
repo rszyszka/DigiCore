@@ -3,7 +3,7 @@
 class Grain {
 private:
 
-	const double pi = acos(-1.0);
+	const double pi;
 
 	double angle1;
 	double angle2;

@@ -15,6 +15,7 @@
 #include "Neighborhood3DPentagonal.h"
 #include "Neighborhood2DHexagonal.h"
 #include "Neighborhood3DHexagonal.h"
+#include "../MSMlamellarPhaseGeneratorLib/LamellarPhaseGenerator.h"
 
 
 #include <map>
@@ -24,7 +25,8 @@ using namespace std;
 Controller::~Controller()
 {
 	delete space;
-	delete simulation;
+	delete grainGrowth;
+	delete lamellarPhaseAddition;
 }
 
 Controller::Controller()
@@ -34,7 +36,7 @@ Controller::Controller()
 
 void Controller::StartProcess()
 {
-	simulation->simulateContinuously();
+	grainGrowth->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
@@ -42,13 +44,15 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 	int sizeX = 10;
 	int sizeY = 10;
 	int sizeZ = 1;
-	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood2DPentagonal(sizeX, sizeY, Absorbent));
+	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood2DPentagonal(sizeX, sizeY, Periodic));
 	
 	//simulation = new McGrainGrowth(space, 10, 2, 0.3);
 	
-	simulation = new GrainGrowth(space);
+	grainGrowth = new GrainGrowth(space);
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
 	nucleonsGenerator->putNucleonsRandomly(space, 5);
+
+	lamellarPhaseAddition = new LamellarPhaseGenerator(space);
 
 }
 
@@ -71,6 +75,19 @@ void Controller::CloseProcess()
 		cout << endl;
 	}
 
+
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getXsize(); i++)
+		{
+			for (int j = 0; j < space->getYsize(); j++)
+			{
+	//TODO:			cout << lamellarPhaseAddition->getSecondPhaseSpace()->getCells()[i][j][k]->getId() << " ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}
 
 
 

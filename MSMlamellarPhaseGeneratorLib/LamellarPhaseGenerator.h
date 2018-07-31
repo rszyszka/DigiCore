@@ -7,6 +7,9 @@
 class LamellarPhaseGenerator : public Simulation
 {
 private:
+
+	int progress;
+
 	Space *secondPhaseSpace;
 	int numberOfGrains;
 
@@ -42,6 +45,7 @@ private:
 public:
 	__declspec(dllexport) LamellarPhaseGenerator(Space *space);
 	__declspec(dllexport) bool performStep() override;
+	__declspec(dllexport) int getProgress() override;
 	__declspec(dllexport) Space* getSecondPhaseSpace();
 	__declspec(dllexport) vector<Grain> getGrainsAngles();
 	__declspec(dllexport) vector<Grain> getTwinsAngles();

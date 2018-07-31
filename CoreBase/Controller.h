@@ -8,7 +8,8 @@ class Controller
 {
 private:
 	Space * space;
-	Simulation * simulation;
+	Simulation * grainGrowth;
+	Simulation * lamellarPhaseAddition;
 	random_device rd;
 
 public:

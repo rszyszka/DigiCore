@@ -14,6 +14,14 @@ LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space) : Simulation(space
 	{
 		grainsAngles.push_back(a);
 	}
+
+	progress = 100 / (xSize * ySize * zSize);
+
+}
+
+int LamellarPhaseGenerator::getProgress()
+{
+	return progress;
 }
 
 bool LamellarPhaseGenerator::performStep()
