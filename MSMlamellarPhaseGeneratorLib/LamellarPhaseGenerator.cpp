@@ -19,7 +19,7 @@ LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space) : Simulation(space
 bool LamellarPhaseGenerator::performStep()
 {
 	double alpha = (rand() % 180) * pi / 180.0;
-	
+
 	Grain a;
 	while (grainsAngles[grainIndex].childTwins < 3) {
 		twinsAngles.push_back(a);
@@ -56,12 +56,434 @@ bool LamellarPhaseGenerator::performStep()
 		z2 = getLimitZ2(grainIndex);
 
 		if (this->getSpace()->getBoundaryConditions() == BoundaryConditions(Periodic)) {
-			//TODO
+			if (x1 == 0)
+				x1 = getLimitX1P(grainIndex);
+
+			if (x2 == this->getSpace()->getXsize() - 1)
+				x2 = getLimitX2P(grainIndex) + this->getSpace()->getXsize();
+
+			if (y1 == 0)
+				y1 = getLimitY1P(grainIndex);
+
+			if (y2 == this->getSpace()->getYsize() - 1)
+				y2 = getLimitY2P(grainIndex) + this->getSpace()->getYsize();
+
+			if (this->getSpace()->is3Dspace() && z1 == 0)
+				z1 = getLimitZ1P(grainIndex);
+
+			if (this->getSpace()->is3Dspace() && z2 == this->getSpace()->getZsize() - 1)
+				z2 = getLimitZ2P(grainIndex) + this->getSpace()->getZsize();
 		}
 
+		Point s1, s2;
+		int half = 180;
+		alpha = int(alpha + half) % half;
+		double at = tan(alpha * pi / 180.0);
+		if (alpha == 0 || alpha == 180) {
+			s1.setXYZ(x1, int((y1 + y2) / 2.0), z1);
+			s2.setXYZ(x2, int((y1 + y2) / 2.0), z1);
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setY(int(double(y1 + y2)*0.5) + double(y2 - y1)*0.25 + randV);
+				s1.setY(int(double(y1 + y2)*0.5) + double(y2 - y1)*0.25 + randV);
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setY(int(double(y1 + y2)*0.5) - double(y2 - y1)*0.25 + randV);
+				s1.setY(int(double(y1 + y2)*0.5) - double(y2 - y1)*0.25 + randV);
+			}
+
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setY(s1.getY() + 1);
+				s2.setY(s2.getY() + 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setY(s1.getY() - d);
+					sx2.setY(s2.getY() - d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+
+		}
+		else if (alpha > 0 && alpha <= 30) {
+			s1.setXYZ(x1, int((y1 + y2) / 2.0), z1);
+
+			double x0 = double(s1.getX() - s1.getY() / at);// = double ((s1.getY() - at * s1.getX()) / (-at));
+			double b = -at * x0;
+			double tempY = at * x2 + b;
+			double tempX = (y2 - b) / at;
+
+			if ((x2 - s1.getX())*(x2 - s1.getX()) + (tempY - s1.getY()) * (tempY - s1.getY()) < (tempX - s1.getX())*(tempX - s1.getX()) + (y2 - s1.getY()) * (y2 - s1.getY())) {
+				s2.setXYZ(x2, int(tempY), z1);
+			}
+			else {
+				s2.setXYZ(int(tempX), y2, z1);
+			}
+
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setY(int(s2.getY() + double(y2 - y1)*0.25 + randV));
+				s1.setY(int(s1.getY() + double(y2 - y1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setY(int(s2.getY() - double(y2 - y1)*0.25 + randV));
+				s1.setY(int(s1.getY() - double(y2 - y1)*0.25 + randV));
+			}
+
+
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setY(s1.getY() - 1);
+				s2.setY(s2.getY() - 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+
+			//3d
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setY(s1.getY() - d);
+					sx2.setY(s2.getY() - d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+		}
+		else if (alpha > 30 && alpha < 60) {
+			s1.setX(x1);
+			s1.setY(y1);
+			s1.setZ(z1);
+			double x0 = double((s1.getY() - at * s1.getX()) / (-at));
+			double b = -at * x0;
+			double tempY = at * x2 + b;
+			double tempX = (y2 - b) / at;
+
+			if ((x2 - s1.getX())*(x2 - s1.getX()) + (tempY - s1.getY()) * (tempY - s1.getY()) < (tempX - s1.getX())*(tempX - s1.getX()) + (y2 - s1.getY()) * (y2 - s1.getY())) {
+				s2.setX(x2);
+				s2.setY(int(tempY));
+				s2.setZ(z1);
+			}
+			else {
+				s2.setX(int(tempX));
+				s2.setY(y2);
+				s2.setZ(z1);
+			}
+
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setX(int(s2.getX() + double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() + double(x2 - x1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setX(int(s2.getX() + double(x2 - x1)*0.5 + randV));
+				s1.setX(int(s1.getX() + double(x2 - x1)*0.5 + randV));
+			}
+
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setX(s1.getX() + 1);
+				s2.setX(s2.getX() + 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+			//3d
+
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setX(s1.getX() + d);
+					sx2.setX(s2.getX() + d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+
+		}
+		else if (alpha >= 60 && alpha < 90) {
+			s1.setX((x1 + x2) / 2);
+			s1.setY(y1);
+			s1.setZ(z1);
+			double x0 = double((s1.getY() - at * s1.getX()) / (-at));
+			double b = -at * x0;
+			double tempY = at * x2 + b;
+			double tempX = (y2 - b) / at;
+
+			if ((x2 - s1.getX())*(x2 - s1.getX()) + (tempY - s1.getY()) * (tempY - s1.getY()) < (tempX - s1.getX())*(tempX - s1.getX()) + (y2 - s1.getY()) * (y2 - s1.getY())) {
+				s2.setX(x2);
+				s2.setY(int(tempY));
+				s2.setZ(z1);
+			}
+			else {
+				s2.setX(int(tempX));
+				s2.setY(y2);
+				s2.setZ(z1);
+			}
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setX(int(s2.getX() + double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() + double(x2 - x1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setX(int(s2.getX() - double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() - double(x2 - x1)*0.25 + randV));
+			}
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setX(s1.getX() - 1);
+				s2.setX(s2.getX() - 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+			//3d
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setX(s1.getX() - d);
+					sx2.setX(s2.getX() - d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+		}
+		else if (alpha == 90) {
+			s1.setX(int((x1 + x2)*0.5));
+			s1.setY(y1);
+			s1.setZ(z1);
+			s2.setX(int((x1 + x2)*0.5));
+			s2.setY(y2);
+			s2.setZ(z1);
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setX(int(s2.getX() + double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() + double(x2 - x1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setX(int(s2.getX() - double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() - double(x2 - x1)*0.25 + randV));
+			}
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setX(s1.getX() + 1);
+				s2.setX(s2.getX() + 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+			//3d
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setX(s1.getX() + d);
+					sx2.setX(s2.getX() + d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+		}
+		else if (alpha > 90 && alpha < 120) {
+			s1.setX(int((x1 + x2)*0.5));
+			s1.setY(y1);
+			s1.setZ(z1);
+			double x0 = double((s1.getY() - at * s1.getX()) / (-at));
+			double b = -at * x0;
+			double tempY = at * x1 + b;
+			double tempX = (y2 - b) / at;
+
+
+
+			if ((x2 - s1.getX())*(x2 - s1.getX()) + (tempY - s1.getY()) * (tempY - s1.getY()) < (tempX - s1.getX())*(tempX - s1.getX()) + (y2 - s1.getY()) * (y2 - s1.getY())) {
+				s2.setX(x1);
+				s2.setY(int(tempY));
+				s2.setZ(z1);
+			}
+			else {
+				s2.setX(int(tempX));
+				s2.setY(y2);
+				s2.setZ(z1);
+			}
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setX(int(s2.getX() + double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() + double(x2 - x1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setX(int(s2.getX() - double(x2 - x1)*0.25 + randV));
+				s1.setX(int(s1.getX() - double(x2 - x1)*0.25 + randV));
+			}
+
+			//2d
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setX(s1.getX() + 1);
+				s2.setX(s2.getX() + 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+
+			//3d
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setX(s1.getX() + d);
+					sx2.setX(s2.getX() + d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+		}
+		else if (alpha >= 120 && alpha <= 150) {
+			s1.setX(x2);
+			s1.setY(y1);
+			s1.setZ(z1);
+			double x0 = double((s1.getY() - at * s1.getX()) / (-at));
+			double b = -at * x0;
+			double tempY = at * x1 + b;
+			double tempX = (y2 - b) / at;
+
+			if ((x2 - s1.getX())*(x2 - s1.getX()) + (tempY - s1.getY()) * (tempY - s1.getY()) < (tempX - s1.getX())*(tempX - s1.getX()) + (y2 - s1.getY()) * (y2 - s1.getY())) {
+				s2.setX(x1);
+				s2.setY(int(tempY));
+				s2.setZ(z1);
+			}
+			else {
+				s2.setX(int(tempX));
+				s2.setY(y2);
+				s2.setZ(z1);
+			}
+
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setY(int(s2.getY() + double(y2 - y1)*0.25 + randV));
+				s1.setY(int(s1.getY() + double(y2 - y1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setY(int(s2.getY() - double(y2 - y1)*0.25 + randV));
+				s1.setY(int(s1.getY() - double(y2 - y1)*0.25 + randV));
+			}
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setY(s1.getY() + 1);
+				s2.setY(s2.getY() + 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+			//3d
+
+
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setY(s1.getY() + d);
+					sx2.setY(s2.getY() + d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					s1.setY(s1.getY() + 1);
+					s2.setY(s2.getY() + 1);
+					s1.setZ(l);
+					s2.setZ(l);
+					midpointLine(s1, s2, grainIndex);
+				}
+			}
+		}
+		else if (alpha >= 150 && alpha < 180) {
+			s1.setX(x1);
+			s1.setY(int((y1 + y2)*0.5));
+			s1.setZ(z1);
+			double x0 = double((s1.getY() - at * s1.getX()) / (-at));
+			double b = -at * x0;
+			double tempY = at * x2 + b;
+			double tempX = (y1 - b) / at;
+			double d1, d2;
+			d1 = sqrt((x2 - s1.getX())*(x2 - s1.getX()) + (tempY - s1.getY()) * (tempY - s1.getY()));
+			d2 = sqrt((tempX - s1.getX())*(tempX - s1.getX()) + (y1 - s1.getY()) * (y1 - s1.getY()));
+			if (d1 >= d2) {
+				s2.setX(int(tempX));
+				s2.setY(y1);
+				s2.setZ(z1);
+			}
+			else {
+				s2.setX(x2);
+				s2.setY(int(tempY));
+				s2.setZ(z1);
+			}
+
+			int param = 5;
+			int randV = rand() % param;
+			if (grainsAngles[grainIndex].childTwins == 2) {
+				s2.setY(int(s2.getY() + double(y2 - y1)*0.25 + randV));
+				s1.setY(int(s1.getY() + double(y2 - y1)*0.25 + randV));
+			}
+			else if (grainsAngles[grainIndex].childTwins == 3) {
+				s2.setY(int(s2.getY() - double(y2 - y1)*0.25 + randV));
+				s1.setY(int(s1.getY() - double(y2 - y1)*0.25 + randV));
+			}
+
+			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+				s1.setY(s1.getY() + 1);
+				s2.setY(s2.getY() + 1);
+				midpointLine(s1, s2, grainIndex);
+			}
+
+			//3d	
+			Point sx1, sx2;
+			sx1 = s1;
+			sx2 = s2;
+			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+				for (int d = 0; d <= twinWidth; ++d) {
+					sx1.setY(s1.getY() + d);
+					sx2.setY(s2.getY() + d);
+					sx1.setZ(l);
+					sx2.setZ(l);
+					midpointLine(sx1, sx2, grainIndex);
+				}
+			}
+		}
 	}
-	return false;
+	if(grainIndex < numberOfGrains)
+		return false;
+	return true;
 }
+
+Space * LamellarPhaseGenerator::getSecondPhaseSpace(){ return this->secondPhaseSpace; }
 
 vector<Grain> LamellarPhaseGenerator::getGrainsAngles() { return this->grainsAngles; }
 vector<Grain> LamellarPhaseGenerator::getTwinsAngles() { return this->twinsAngles; }
@@ -261,7 +683,7 @@ int LamellarPhaseGenerator::getLimitX1P(int grainIndex)
 	return getLimitX1(grainIndex);
 }
 
-int LamellarPhaseGenerator::getLimitX1P(int grainIndex)
+int LamellarPhaseGenerator::getLimitX2P(int grainIndex)
 {
 	for (int i = this->getSpace()->getXsize() / 2; i >= 0; --i) {
 		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
@@ -463,6 +885,129 @@ void LamellarPhaseGenerator::KQ4_mat(double q[5], double mat[4][4]) {
 	for (i = 1; i <= 3; i++) {
 		for (j = 1; j <= 3; j++)
 			mat[i][j] *= 2.0;
+	}
+}
+
+void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
+{
+	int X = this->getSpace()->getXsize();
+	int Y = this->getSpace()->getYsize();
+	int Z = this->getSpace()->getZsize();
+
+	int k = k1.getZ();
+	int x0 = k1.getX();
+	int y0 = k1.getY();
+	int x1 = k2.getX();
+	int y1 = k2.getY();
+	int d, dx, dy, ai, bi, xi, yi;
+	int x = x0, y = y0;
+	if (x0 < x1) {
+		xi = 1;
+		dx = x1 - x0;
+	}
+	else {
+		xi = -1;
+		dx = x0 - x1;
+	}
+
+	if (y0 < y1) {
+		yi = 1;
+		dy = y1 - y0;
+	}
+	else {
+		yi = -1;
+		dy = y0 - y1;
+	}
+
+	if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
+		&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) {
+		this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+	}
+
+	if (dx > dy) {
+		ai = (dy - dx) * 2;
+		bi = dy * 2;
+		d = bi - dx;
+		while (x != x1) {
+			if (d >= 0) {
+				x += xi;
+				y += yi;
+				d += ai;
+			}
+			else {
+				d += bi;
+				x += xi;
+			}
+
+
+			//if(x >= X || y >= Y || y < 0 || x < 0)
+			//return;
+
+			if (x0 > x1)
+				if (x > x0 || x < x1)
+					return;
+
+			if (x0 < x1)
+				if (x > x1 || x < x0)
+					return;
+
+			if (y0 > y1)
+				if (y > y0 || y < y1)
+					return;
+
+			if (y1 > y0)
+				if (y > y1 || y < y0)
+					return;
+
+			if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
+	/*check*/			&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z] == 0) {
+	/*tutaj [k]*/			this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+			}
+		}
+	}
+	else {
+		ai = (dx - dy) * 2;
+		bi = dx * 2;
+		d = bi - dy;
+		// pêtla po kolejnych y
+		while (y != y1) {
+			// test wspó³czynnika
+			if (d >= 0) {
+				x += xi;
+				y += yi;
+				d += ai;
+
+			}
+			else {
+				d += bi;
+				y += yi;
+			}
+
+
+
+			if (x0 > x1)
+				if (x > x0 || x < x1)
+					return;
+
+			if (x0 < x1)
+				if (x > x1 || x < x0)
+					return;
+
+			if (y0 > y1)
+				if (y > y0 || y < y1)
+					return;
+
+			if (y1 > y0)
+				if (y > y1 || y < y0)
+					return;
+			//if(x >= X || y >= Y || y < 0 || x < 0)
+			//return; 
+
+			if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
+				&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) {
+				this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+			}
+		}
 	}
 }
 
