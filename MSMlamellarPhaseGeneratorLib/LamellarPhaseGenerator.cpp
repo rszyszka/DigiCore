@@ -5,7 +5,7 @@ LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space) : Simulation(space
 {
 	srand(time(nullptr));
 	numberOfGrains = this->space->getMaxId();
-	secondPhaseSpace = new Space();
+	secondPhaseSpace = new Space(space->getXsize(), space->getYsize(), space->getZsize(), space->getNeighborhood());
 	
 	Grain a;
 	grainsAngles.push_back(a); //id == 0;
@@ -486,9 +486,11 @@ bool LamellarPhaseGenerator::performStep()
 			}
 		}
 	}
-	if(grainIndex < numberOfGrains)
-		return false;
-	return true;
+	if (grainIndex < numberOfGrains) {
+		grainIndex++;
+		return true;
+	}
+	return false;
 }
 
 Space * LamellarPhaseGenerator::getSecondPhaseSpace(){ return this->secondPhaseSpace; }

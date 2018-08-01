@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <random>
 #include "Simulation.h"
+#include "LamellarPhaseGenerator.h"
 #include "Space.h"
 
 class Controller
@@ -9,7 +10,7 @@ class Controller
 private:
 	Space * space;
 	Simulation * grainGrowth;
-	Simulation * lamellarPhaseAddition;
+	LamellarPhaseGenerator* lamellarPhaseAddition;
 	random_device rd;
 
 public:

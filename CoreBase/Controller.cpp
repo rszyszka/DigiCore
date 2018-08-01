@@ -37,6 +37,7 @@ Controller::Controller()
 void Controller::StartProcess()
 {
 	grainGrowth->simulateContinuously();
+	lamellarPhaseAddition->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
@@ -82,7 +83,7 @@ void Controller::CloseProcess()
 		{
 			for (int j = 0; j < space->getYsize(); j++)
 			{
-	//TODO:			cout << lamellarPhaseAddition->getSecondPhaseSpace()->getCells()[i][j][k]->getId() << " ";
+				cout << lamellarPhaseAddition->getSecondPhaseSpace()->getCells()[i][j][k]->getId() << " ";
 			}
 			cout << endl;
 		}
