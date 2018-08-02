@@ -45,7 +45,7 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 	int sizeX = 10;
 	int sizeY = 10;
 	int sizeZ = 1;
-	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood2DPentagonal(sizeX, sizeY, Periodic));
+	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood2DPentagonal(sizeX, sizeY, Absorbent));
 	
 	//simulation = new McGrainGrowth(space, 10, 2, 0.3);
 	
@@ -65,9 +65,9 @@ void Controller::CloseProcess()
 	//Just for test
 	for (int k = 0; k < space->getZsize(); k++)
 	{
-		for (int i = 0; i < space->getXsize(); i++)
+		for (int i = 0; i < space->getYsize(); i++)
 		{
-			for (int j = 0; j < space->getYsize(); j++)
+			for (int j = 0; j < space->getXsize(); j++)
 			{
 				cout << space->getCells()[i][j][k]->getId() << " ";
 			}
@@ -79,9 +79,9 @@ void Controller::CloseProcess()
 
 	for (int k = 0; k < space->getZsize(); k++)
 	{
-		for (int i = 0; i < space->getXsize(); i++)
+		for (int i = 0; i < space->getYsize(); i++)
 		{
-			for (int j = 0; j < space->getYsize(); j++)
+			for (int j = 0; j < space->getXsize(); j++)
 			{
 				cout << lamellarPhaseAddition->getSecondPhaseSpace()->getCells()[i][j][k]->getId() << " ";
 			}
