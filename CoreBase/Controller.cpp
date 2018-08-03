@@ -44,14 +44,14 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 {
 	int sizeX = 10;
 	int sizeY = 10;
-	int sizeZ = 1;
-	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood2DPentagonal(sizeX, sizeY, Absorbent));
+	int sizeZ = 10;
+	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
 	
 	//simulation = new McGrainGrowth(space, 10, 2, 0.3);
 	
 	grainGrowth = new GrainGrowth(space);
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
-	nucleonsGenerator->putNucleonsRandomly(space, 5);
+	nucleonsGenerator->putNucleonsRandomly(space, 3);
 
 	lamellarPhaseAddition = new LamellarPhaseGenerator(space);
 
