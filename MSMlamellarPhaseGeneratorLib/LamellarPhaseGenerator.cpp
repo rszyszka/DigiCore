@@ -26,7 +26,8 @@ int LamellarPhaseGenerator::getProgress()
 
 bool LamellarPhaseGenerator::performStep()
 {
-	double alpha = rand() % 180;
+	//double alpha = rand() % 45 + 45;
+	double alpha = 60;
 
 	Grain a;
 	while (grainsAngles[grainIndex].childTwins < 3) {

@@ -19,7 +19,7 @@ private:
 	vector<Grain> twinsAngles;
 
 	int grainIndex = 1;
-	int twinWidth = 2;
+	int twinWidth = 1;
 
 	void KQ4_eul(double r[5], double ang[4]);
 	void Keul_Q4(double euler[4], double q[5]);
