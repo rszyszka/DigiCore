@@ -1,5 +1,6 @@
 #include "LamellarPhaseGenerator.h"
 #include <ctime>
+#include <iostream>
 
 LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space) : Simulation(space)
 {
@@ -1020,5 +1021,9 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 			}
 		}
 	}
+	/*
+	cout << "X: " << (x + X) % X << " Y: " << (y + Y) % Y << " Z: " << (k + Z) % Z << endl;
+	cout<<"ID: "<< this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId()<<endl;*/
+
 }
 
