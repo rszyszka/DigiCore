@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CircullarInclusionsAddition.h" />
+    <ClInclude Include="Direction.h" />
+    <ClInclude Include="Ball.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CircullarInclusionsAddition.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8A13D15B-6345-4653-A5C6-8E64AF20C3F1}</ProjectGuid>
