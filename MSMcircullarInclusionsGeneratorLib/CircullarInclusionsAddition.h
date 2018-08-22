@@ -1,6 +1,7 @@
 #pragma once
 #include "../MSMcoreLib/Simulation.h"
 #include "Ball.h"
+#include "Surface.h"
 #include <math.h>
 #include <time.h>
 
@@ -15,9 +16,15 @@ private:
 	int radius, desiredSurface, desiredVolume;
 	vector<Ball> activeBalls;
 	vector<Ball> balls;
+	Surface* surface;
 
 	void setUnmixedGrid2D();
 	void addMinimumAmountOfCircles();
+	void adjustSurface();
+	void mixBalls2D();
+	bool checkIfInRange(Ball movedBall, Direction dir);
+	void fill2DTable();
+	bool** create2DSchema(int radius);
 
 public:
 	__declspec(dllexport) CircullarInclusionsAddition(Space *space);

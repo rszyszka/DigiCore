@@ -15,6 +15,8 @@ public:
 	__declspec(dllexport) Ball(int x, int y, int z);
 	__declspec(dllexport) Ball(int x, int y, bool side);
 
+	__declspec(dllexport) Ball(int x, int y, bool side, int radius, Direction dirX, Direction dirY);
+
 	__declspec(dllexport) Direction getDirX() const;
 	__declspec(dllexport) Direction getDirY() const;
 	__declspec(dllexport) Direction getDirZ() const;
@@ -30,6 +32,8 @@ public:
 
 	__declspec(dllexport) bool operator==(const Ball*p) const
 	{
-		return this->getX() == p->getX() && this->getY() == p->getY() && this->getDirX() == p->getDirX() && this->getDirY() == p->getDirY();
+		return this->getX() == p->getX() && this->getY() == p->getY()
+			&& this->getDirX() == p->getDirX() && this->getDirY() == p->getDirY()
+			&& this->getRadius() == p->getRadius();
 	}
 };
