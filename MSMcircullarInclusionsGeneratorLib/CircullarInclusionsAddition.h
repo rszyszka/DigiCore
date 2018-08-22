@@ -2,6 +2,7 @@
 #include "../MSMcoreLib/Simulation.h"
 #include "Ball.h"
 #include "Surface.h"
+#include "BallSchema2D.h"
 #include <math.h>
 #include <time.h>
 
@@ -23,9 +24,9 @@ private:
 	void adjustSurface();
 	void mixBalls2D();
 	bool checkIfInRange(Ball movedBall, Direction dir);
-	void fill2DTable();
-	bool** create2DSchema(int radius);
-
+	void fill2dSpace();
+	BallSchema2D* create2DSchema(int radius);
+	void fill2dBall(BallSchema2D*, int x, int y, int radius);
 public:
 	__declspec(dllexport) CircullarInclusionsAddition(Space *space);
 	__declspec(dllexport) bool performStep() override;

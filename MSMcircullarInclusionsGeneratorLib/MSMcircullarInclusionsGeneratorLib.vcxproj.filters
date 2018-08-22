@@ -30,6 +30,9 @@
     <ClInclude Include="Surface.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="BallSchema2D.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CircullarInclusionsAddition.cpp">
@@ -39,6 +42,9 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Surface.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="BallSchema2D.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>

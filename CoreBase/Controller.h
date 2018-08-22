@@ -3,6 +3,7 @@
 #include <random>
 #include "Simulation.h"
 #include "LamellarPhaseGenerator.h"
+#include "CircullarInclusionsAddition.h"
 #include "Space.h"
 
 class Controller
@@ -11,6 +12,7 @@ private:
 	Space * space;
 	Simulation * grainGrowth;
 	LamellarPhaseGenerator* lamellarPhaseAddition;
+	CircullarInclusionsAddition* circullarInclusionsAddition;
 	random_device rd;
 
 public:

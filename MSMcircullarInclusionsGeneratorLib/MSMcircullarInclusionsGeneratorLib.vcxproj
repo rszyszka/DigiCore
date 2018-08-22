@@ -19,19 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BallSchema2D.h" />
     <ClInclude Include="CircullarInclusionsAddition.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Surface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BallSchema2D.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CircullarInclusionsAddition.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Ball.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="Surface.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">
+      <Project>{cd753d6b-441e-4907-ad5a-6dd825407857}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

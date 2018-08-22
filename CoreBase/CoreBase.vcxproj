@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)MSMgrainGrowthLib;$(SolutionDir)MSMcoreLib;$(SolutionDir)MSMlamellarPhaseGeneratorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)MSMgrainGrowthLib;$(SolutionDir)MSMcoreLib;$(SolutionDir)MSMlamellarPhaseGeneratorLib;$(SolutionDir)MSMcircullarInclusionsGeneratorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,6 +166,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MSMcircullarInclusionsGeneratorLib\MSMcircullarInclusionsGeneratorLib.vcxproj">
+      <Project>{8a13d15b-6345-4653-a5c6-8e64af20c3f1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">
       <Project>{cd753d6b-441e-4907-ad5a-6dd825407857}</Project>
     </ProjectReference>

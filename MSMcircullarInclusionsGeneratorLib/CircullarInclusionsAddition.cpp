@@ -1,4 +1,5 @@
 #include "CircullarInclusionsAddition.h"
+#include <iostream>
 
 CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simulation(space)
 {
@@ -8,9 +9,9 @@ CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simula
 	ySize = space->getYsize();
 	zSize = space->getZsize();
 
-	radius = 6;
+	radius = 10;
 	desiredSurface = (int)(10 * xSize * ySize / (double)100);
-	desiredVolume = 10;
+	desiredVolume = 25;
 
 	this->surface = new Surface(radius, xSize, ySize);
 
@@ -21,9 +22,21 @@ CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simula
 bool CircullarInclusionsAddition::performStep()
 {
 	//TODO::
-	if (!this->inclusionsSpace->is3Dspace()) {
+	/*if (!this->inclusionsSpace->is3Dspace()) {
 		
-	}
+	}*/
+
+	cout << "step1 - setUnmixedGrid..." << endl;
+	setUnmixedGrid2D();
+	cout << "step2 - addMinimumAmountOfCircles..." << endl;
+	addMinimumAmountOfCircles();
+	cout << "step3 - adjustSurface ..." << endl;
+	adjustSurface();
+	cout << "step4 - mixBalls..." << endl;
+	mixBalls2D();
+	cout << "step5 - fillSpace..." << endl;
+	fill2dSpace();
+
 	return false;
 }
 
@@ -291,10 +304,74 @@ bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall, Direction dir)
 	return false;
 }
 
-void CircullarInclusionsAddition::fill2DTable()
+void CircullarInclusionsAddition::fill2dSpace()
 {
-	//TODO::
+	vector<BallSchema2D*> ballSchemas;
+	for (int i = 0; i < activeBalls.size(); i++)
+	{
+		BallSchema2D* schema = nullptr;
+		for (int j = 0; j < ballSchemas.size(); j++)
+		{
+			if (ballSchemas[j]->getSize() == activeBalls[i].getRadius() * 2)
+			{
+				schema = ballSchemas[j];
+				break;
+			}
+		}
+		if (schema == nullptr) 
+		{
+			schema = create2DSchema(activeBalls[i].getRadius());
+			ballSchemas.push_back(schema);
+		}
+		fill2dBall(schema, activeBalls[i].getX(), activeBalls[i].getY(), activeBalls[i].getRadius());
+	}
+}
 
+BallSchema2D * CircullarInclusionsAddition::create2DSchema(int radius)
+{
+	int ballMiddle = radius;
+	BallSchema2D* schema = new BallSchema2D(radius);
+	for (int i = 0; i < schema->getSize() / 2; i++)
+	{
+		for (int j = 0; j < schema->getSize() / 2; j++)
+		{
+			if (sqrt(pow(radius - i, 2) + pow(radius - j, 2)) < radius)
+			{
+				schema->getSchema()[i][j] = true;
+			}
+		}
+		for (int i = radius; i < schema->getSize(); i++)
+		{
+			for (int j = 0; j < schema->getSize() / 2; j++)
+			{
+				schema->getSchema()[schema->getSize() - (i - radius) - 1][j] = schema->getSchema()[i - radius][j];
+			}
+		}
+		for (int i = 0; i < schema->getSize(); i++)
+		{
+			for (int j = radius; j < schema->getSize(); j++)
+			{
+				schema->getSchema()[i][j] = schema->getSchema()[i][schema->getSize() - j - 1];
+			}
+		}
+
+		return schema;
+	}
+}
+
+void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y, int radius)
+{
+	for (int i = 0; i < schema->getSize(); i++)
+	{
+		for (int j = 0; j < schema->getSize(); j++)
+		{
+			if (!(x + i - radius >= xSize || x + i - radius < 0 || y + j - radius >= ySize || y + j - radius < 0))
+			{
+				if (this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0] == 0)
+					this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0]->setId((int) schema->getSchema()[i][j]);
+			}
+		}
+	}
 }
 
 int CircullarInclusionsAddition::getProgress()

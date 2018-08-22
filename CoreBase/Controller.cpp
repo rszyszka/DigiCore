@@ -15,7 +15,6 @@
 #include "Neighborhood3DPentagonal.h"
 #include "Neighborhood2DHexagonal.h"
 #include "Neighborhood3DHexagonal.h"
-#include "../MSMlamellarPhaseGeneratorLib/LamellarPhaseGenerator.h"
 
 
 #include <map>
@@ -36,14 +35,15 @@ Controller::Controller()
 
 void Controller::StartProcess()
 {
-	grainGrowth->simulateContinuously();
-	lamellarPhaseAddition->simulateContinuously();
+	/*grainGrowth->simulateContinuously();
+	lamellarPhaseAddition->simulateContinuously();*/
+	circullarInclusionsAddition->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
 {
-	int sizeX = 10;
-	int sizeY = 10;
+	int sizeX = 1000;
+	int sizeY = 1000;
 	int sizeZ = 1;
 	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
 	
@@ -54,6 +54,7 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 	nucleonsGenerator->putNucleonsRandomly(space, 3);
 
 	lamellarPhaseAddition = new LamellarPhaseGenerator(space);
+	circullarInclusionsAddition = new CircullarInclusionsAddition(space);
 
 }
 
@@ -61,7 +62,7 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 void Controller::CloseProcess()
 {
 	cout << "Finalize" << endl;
-
+	/*
 	//Just for test
 	for (int k = 0; k < space->getZsize(); k++)
 	{
@@ -89,8 +90,21 @@ void Controller::CloseProcess()
 		}
 		cout << endl;
 	}
+	*/
 
 
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getYsize(); i++)
+		{
+			for (int j = 0; j < space->getXsize(); j++)
+			{
+				cout << circullarInclusionsAddition->getInclusionsSpace()->getCells()[i][j][k]->getId() << " ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}
 
 	getchar();
 }
