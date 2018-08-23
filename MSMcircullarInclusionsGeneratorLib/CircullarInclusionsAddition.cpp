@@ -36,7 +36,7 @@ bool CircullarInclusionsAddition::performStep()
 	mixBalls2D();
 	cout << "step5 - fillSpace..." << endl;
 	fill2dSpace();
-
+	cout << "DONE!"<<endl;
 	return false;
 }
 
@@ -335,28 +335,28 @@ BallSchema2D * CircullarInclusionsAddition::create2DSchema(int radius)
 	{
 		for (int j = 0; j < schema->getSize() / 2; j++)
 		{
-			if (sqrt(pow(radius - i, 2) + pow(radius - j, 2)) < radius)
+			double pierw = sqrt(pow(radius - i, 2) + pow(radius - j, 2));
+			if (pierw < radius)
 			{
 				schema->getSchema()[i][j] = true;
 			}
 		}
-		for (int i = radius; i < schema->getSize(); i++)
-		{
-			for (int j = 0; j < schema->getSize() / 2; j++)
-			{
-				schema->getSchema()[schema->getSize() - (i - radius) - 1][j] = schema->getSchema()[i - radius][j];
-			}
-		}
-		for (int i = 0; i < schema->getSize(); i++)
-		{
-			for (int j = radius; j < schema->getSize(); j++)
-			{
-				schema->getSchema()[i][j] = schema->getSchema()[i][schema->getSize() - j - 1];
-			}
-		}
-
-		return schema;
 	}
+	for (int i = radius; i < schema->getSize(); i++)
+	{
+		for (int j = 0; j < schema->getSize() / 2; j++)
+		{
+			schema->getSchema()[schema->getSize() - (i - radius) - 1][j] = schema->getSchema()[i - radius][j];
+		}
+	}
+	for (int i = 0; i < schema->getSize(); i++)
+	{
+		for (int j = radius; j < schema->getSize(); j++)
+		{
+			schema->getSchema()[i][j] = schema->getSchema()[i][schema->getSize() - j - 1];
+		}
+	}
+	return schema;
 }
 
 void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y, int radius)
@@ -367,8 +367,10 @@ void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y,
 		{
 			if (!(x + i - radius >= xSize || x + i - radius < 0 || y + j - radius >= ySize || y + j - radius < 0))
 			{
-				if (this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0] == 0)
-					this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0]->setId((int) schema->getSchema()[i][j]);
+				if (this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0]->getId() == 0)
+				{
+					this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0]->setId((int)schema->getSchema()[i][j]);
+				}
 			}
 		}
 	}

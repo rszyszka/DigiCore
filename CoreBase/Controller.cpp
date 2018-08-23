@@ -15,6 +15,7 @@
 #include "Neighborhood3DPentagonal.h"
 #include "Neighborhood2DHexagonal.h"
 #include "Neighborhood3DHexagonal.h"
+#include <fstream>
 
 
 #include <map>
@@ -92,19 +93,19 @@ void Controller::CloseProcess()
 	}
 	*/
 
-
+	ofstream out("result.txt");
 	for (int k = 0; k < space->getZsize(); k++)
 	{
 		for (int i = 0; i < space->getYsize(); i++)
 		{
 			for (int j = 0; j < space->getXsize(); j++)
 			{
-				cout << circullarInclusionsAddition->getInclusionsSpace()->getCells()[i][j][k]->getId() << " ";
+				out << circullarInclusionsAddition->getInclusionsSpace()->getCells()[i][j][k]->getId() << " ";
 			}
-			cout << endl;
+			out << endl;
 		}
-		cout << endl;
+		out << endl;
 	}
-
+	out.close();
 	getchar();
 }

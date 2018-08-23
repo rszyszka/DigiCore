@@ -15,6 +15,10 @@ BallSchema2D::BallSchema2D(int radius) : size(radius*2)
 	for (int i = 0; i < size; i++)
 	{
 		schema[i] = new bool[size];
+		for (int j = 0; j < size; j++)
+		{
+			schema[i][j] = false;
+		}
 	}
 }
 
