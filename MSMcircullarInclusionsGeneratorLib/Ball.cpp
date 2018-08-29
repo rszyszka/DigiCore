@@ -36,6 +36,15 @@ Ball::Ball(int x, int y, bool side, int radius, Direction dirX, Direction dirY):
 	this->radius = radius;
 }
 
+Ball::Ball(int x, int y, int z, Direction dirX, Direction dirY, Direction dirZ) : Point(x,y,z)
+{
+	this->dirX = dirX;
+	this->dirY = dirY;
+	this->dirZ = dirZ;
+	this->side = false;
+	this->radius = 2;
+}
+
 Direction Ball::getDirX() const
 {
 	return this->dirX;

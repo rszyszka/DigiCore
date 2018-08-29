@@ -1,5 +1,6 @@
 #include "CircullarInclusionsAddition.h"
 #include <iostream>
+#include "Volume.h"
 
 CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simulation(space)
 {
@@ -73,6 +74,65 @@ void CircullarInclusionsAddition::setUnmixedGrid2D()
 	}
 }
 
+void CircullarInclusionsAddition::setUnmixedGrid3D()
+{
+	int width = 0;
+
+	double translation;
+	double amountInRowX = (double)xSize / (2 * radius);
+	double amountInRowY = (double)ySize / (2 * radius);
+	double amountInRowZ = (double)zSize / (2 * radius);
+
+	int sizeBallsX = (int)amountInRowX + 1;
+	int sizeBallsY = (int)amountInRowY + 1;
+	int sizeBallsZ = (int)amountInRowZ + 1;
+
+	int* tableOfBallsX = new int[sizeBallsX];
+	int* tableOfBallsY = new int[sizeBallsY];
+	int* tableOfBallsZ = new int[sizeBallsZ];
+
+	for (int i = 0; i < sizeBallsX; i++)
+	{
+		translation = amountInRowX - (int)amountInRowX;
+		tableOfBallsX[i] = i * 2 * radius + ((int)(translation * radius));
+	}
+	for (int i = 0; i < sizeBallsY; i++)
+	{
+		translation = amountInRowY - (int)amountInRowY;
+		tableOfBallsY[i] = i * 2 * radius + ((int)(translation * radius));
+	}
+	for (int i = 0; i < sizeBallsZ; i++)
+	{
+		translation = amountInRowZ - (int)amountInRowZ;
+		tableOfBallsZ[i] = i * 2 * radius + ((int)(translation * radius));
+	}
+
+	int portion = sizeBallsX / 3;
+	cout<<"x-length: "<<sizeBallsX<<endl;
+
+	for (int i = 0; i < sizeBallsZ; i++) //here
+	{
+		for (int j = 0; j < sizeBallsY; j++)
+		{
+			for (int k = 0; k < sizeBallsX; k++)
+			{
+				//if(k < ((tableOfCoordsZ.Length / 2) - width) || k > ((tableOfCoordsZ.Length / 2) + width))
+				//if (k == 11 || k == 5 || k == 16)
+				//if(j == 5 || j == 11 || j == 16)
+				//if(i == j || i == j + 10 || i == j - 10)
+				//if(ListOfBalls.Count <= 5){
+				Ball ball(tableOfBallsX[k], tableOfBallsY[j], tableOfBallsZ[i]);
+				balls.push_back(ball);
+				//}
+				//Console.WriteLine("Checkpoint");
+			}
+		}
+	}
+	delete[] tableOfBallsX;
+	delete[] tableOfBallsY;
+	delete[] tableOfBallsZ;
+}
+
 void CircullarInclusionsAddition::addMinimumAmountOfCircles()
 {
 	double actualSurface = 0;
@@ -88,6 +148,21 @@ void CircullarInclusionsAddition::addMinimumAmountOfCircles()
 		activeBalls.push_back(ball);
 		balls.erase(balls.begin()+i);
 	}
+}
+
+void CircullarInclusionsAddition::setBalls3D()
+{
+	Volume volume(radius, xSize, ySize, zSize);
+	int totalVolume = xSize * ySize * zSize;
+	int randomindex;
+	do
+	{
+		randomindex = rand() % balls.size(); //rand.Next(0, balls.size());
+		ballDirectionInitializer(balls[randomindex]);
+		activeBalls.push_back(balls[randomindex]);
+		volume.countVolume(radius, balls[randomindex].getX(), balls[randomindex].getY(), balls[randomindex].getZ());
+		balls.erase(balls.begin() + randomindex);
+	} while (volume.getActualVolume() < (totalVolume)* desiredVolume / 100);
 }
 
 void CircullarInclusionsAddition::adjustSurface()
@@ -236,6 +311,39 @@ void CircullarInclusionsAddition::mixBalls2D()
 	}
 }
 
+void CircullarInclusionsAddition::mixBals3D()
+{
+	int counter = 0;
+	Ball movedBall;
+	for (int i = 0; i <200/* radius + (radius / 2)*/; i++)
+	{
+		for (int j = 0; j < activeBalls.size(); j++)
+		{
+			movedBall = Ball(
+				activeBalls[j].getX()
+				,activeBalls[j].getY()
+				,activeBalls[j].getZ()
+				,activeBalls[j].getDirX()
+				,activeBalls[j].getDirY()
+				,activeBalls[j].getDirZ()
+			);
+			
+			moveBall(movedBall);
+			if (checkIfInRange(movedBall))
+			{
+				directionSetter(movedBall, activeBalls[j]);
+			}
+			else
+			{
+				counter++;
+				//if(movedBall.z)
+				activeBalls[j] = movedBall;
+			}
+		}
+
+	}
+}
+
 bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall, Direction dir)
 {
 	int rangexd = movedBall.getX() + 2 * radius;
@@ -297,6 +405,45 @@ bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall, Direction dir)
 				else
 				{
 					continue;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall)
+{
+	int ballsinrange = 0;
+	int rangexd = movedBall.getX() + 2 * radius;
+	int rangexu = movedBall.getX() - 2 * radius;
+	int rangeyd = movedBall.getY() + 2 * radius;
+	int rangeyu = movedBall.getY() - 2 * radius;
+	int rangezd = movedBall.getZ() + 2 * radius;
+	int rangezu = movedBall.getZ() - 2 * radius;
+	if ((movedBall.getX() + radius >= xSize || movedBall.getX() - radius < 0) && movedBall.getDirX() != Immovable)
+		return true;
+	if ((movedBall.getY() + radius >= ySize || movedBall.getY() - radius < 0) && movedBall.getDirY() != Immovable)
+		return true;
+	if ((movedBall.getZ() + radius >= zSize || movedBall.getZ() - radius < 0) && movedBall.getDirZ() != Immovable)
+		return true;
+	for(int i = 0 ; i < activeBalls.size(); i<activeBalls.size())
+	{
+		if (((activeBalls[i].getX() >= rangexu && activeBalls[i].getX() <= rangexd) ||
+			(activeBalls[i].getY() >= rangeyu && activeBalls[i].getY() <= rangeyd)
+			|| (activeBalls[i].getZ() >= rangezu && activeBalls[i].getZ() <= rangezd)))
+		{
+			if (sqrt(pow(activeBalls[i].getX() - movedBall.getX(), 2) + pow(activeBalls[i].getY() - movedBall.getY(), 2)
+				+ pow(activeBalls[i].getZ() - movedBall.getZ(), 2)) >= 2 * radius)
+			{
+				continue;
+			}
+			else
+			{
+				ballsinrange++;
+				if (ballsinrange > 1)
+				{
+					return true;
 				}
 			}
 		}
@@ -373,6 +520,84 @@ void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y,
 				}
 			}
 		}
+	}
+}
+
+void CircullarInclusionsAddition::ballDirectionInitializer(Ball ball)
+{
+	bool isOnBoundary = false;
+	if (ball.getX() + radius >= xSize)
+	{
+		isOnBoundary = true;
+		ball.setDirX(Immovable);
+		ball.setX(ball.getX() + rand()% radius);
+	}
+	if (ball.getX() - radius < 0)
+	{
+		isOnBoundary = true;
+		ball.setDirX(Immovable);
+		ball.setX(ball.getX() - rand() % radius);
+	}
+	if (ball.getY() + radius >= ySize)
+	{
+		isOnBoundary = true;
+		ball.setDirY(Immovable);
+		ball.setY(ball.getY() + rand() % radius);
+	}
+	if (ball.getY() - radius < 0)
+	{
+		isOnBoundary = true;
+		ball.setDirY(Immovable);
+		ball.setY(ball.getY() - rand() % radius);
+	}
+	if (ball.getZ() + radius >= zSize)
+	{
+		isOnBoundary = true;
+		ball.setDirZ(Immovable);
+		ball.setZ(ball.getZ() + rand() % radius);
+	}
+	if (ball.getZ() - radius < 0)
+	{
+		isOnBoundary = true;
+		ball.setDirZ(Immovable);
+		ball.setZ(ball.getZ() - rand() % radius);
+	}
+	if (!isOnBoundary)
+	{
+		ball.setDirX(xSize / 2 > ball.getX() ? Left : Right);
+		ball.setDirY(ySize / 2 > ball.getY() ? Down : Up);
+		ball.setDirZ(zSize / 2 > ball.getZ() ? Forward : Backward);
+	}
+}
+
+void CircullarInclusionsAddition::directionSetter(Ball ball, Ball notMovedBall)
+{
+	if (ball.getX() != notMovedBall.getX()&&notMovedBall.getDirX() != Immovable)
+		notMovedBall.setDirX(notMovedBall.getDirX() == Left ? Right :Left);
+	else if (ball.getY() != notMovedBall.getY() && notMovedBall.getDirY() != Immovable)
+		notMovedBall.setDirY(notMovedBall.getDirY() == Up ? Down : Up);
+	else if (ball.getZ() != notMovedBall.getZ() && notMovedBall.getDirZ() != Immovable)
+		notMovedBall.setDirZ(notMovedBall.getDirZ() == Forward ? Backward : Forward);
+}
+
+void CircullarInclusionsAddition::moveBall(Ball ball)
+{
+	switch (rand() % 3 + 1 )
+	{
+	case 1:
+		if (ball.getDirX() != Immovable)
+			ball.setX(ball.getDirX() == Left ? ball.getX() - 1 : ball.getX() + 1);
+		break;
+	case 2:
+		if (ball.getDirY() != Immovable)
+			ball.setY(ball.getDirY() == Up ? ball.getY() + 1 : ball.getY() - 1);
+		break;
+	case 3:
+		if (ball.getDirZ() != Immovable)
+			ball.setZ(ball.getDirZ() == Forward ? ball.getZ() - 1 : ball.getZ() + 1);
+		break;
+	default:
+		break;
 	}
 }
 

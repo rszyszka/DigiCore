@@ -20,13 +20,21 @@ private:
 	Surface* surface;
 
 	void setUnmixedGrid2D();
+	void setUnmixedGrid3D();
 	void addMinimumAmountOfCircles();
+	void setBalls3D();
 	void adjustSurface();
 	void mixBalls2D();
+	void mixBals3D();
+	void reduceBalls3D();
 	bool checkIfInRange(Ball movedBall, Direction dir);
+	bool checkIfInRange(Ball movedBall);
 	void fill2dSpace();
 	BallSchema2D* create2DSchema(int radius);
 	void fill2dBall(BallSchema2D*, int x, int y, int radius);
+	void ballDirectionInitializer(Ball ball);
+	void directionSetter(Ball ball, Ball notMovedBall);
+	void moveBall(Ball ball);
 public:
 	__declspec(dllexport) CircullarInclusionsAddition(Space *space);
 	__declspec(dllexport) bool performStep() override;

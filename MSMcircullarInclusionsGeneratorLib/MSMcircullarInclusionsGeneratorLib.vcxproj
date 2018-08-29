@@ -24,6 +24,7 @@
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Surface.h" />
+    <ClInclude Include="Volume.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BallSchema2D.cpp">
@@ -38,6 +39,7 @@
     <ClCompile Include="Surface.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Volume.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">

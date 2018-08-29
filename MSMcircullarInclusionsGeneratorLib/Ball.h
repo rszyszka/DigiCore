@@ -16,6 +16,7 @@ public:
 	__declspec(dllexport) Ball(int x, int y, bool side);
 
 	__declspec(dllexport) Ball(int x, int y, bool side, int radius, Direction dirX, Direction dirY);
+	__declspec(dllexport) Ball(int x, int y, int z, Direction dirX, Direction dirY, Direction dirZ);
 
 	__declspec(dllexport) Direction getDirX() const;
 	__declspec(dllexport) Direction getDirY() const;
