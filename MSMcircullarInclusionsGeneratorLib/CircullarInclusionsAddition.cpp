@@ -22,22 +22,36 @@ CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simula
 
 bool CircullarInclusionsAddition::performStep()
 {
-	//TODO::
-	/*if (!this->inclusionsSpace->is3Dspace()) {
-		
-	}*/
 
-	cout << "step1 - setUnmixedGrid..." << endl;
-	setUnmixedGrid2D();
-	cout << "step2 - addMinimumAmountOfCircles..." << endl;
-	addMinimumAmountOfCircles();
-	cout << "step3 - adjustSurface ..." << endl;
-	adjustSurface();
-	cout << "step4 - mixBalls..." << endl;
-	mixBalls2D();
-	cout << "step5 - fillSpace..." << endl;
-	fill2dSpace();
-	cout << "DONE!"<<endl;
+	if (!this->inclusionsSpace->is3Dspace()) {
+		cout << "2D SIMULATION" << endl;
+		cout << "step1 - setUnmixedGrid..." << endl;
+		setUnmixedGrid2D();
+		cout << "step2 - addMinimumAmountOfCircles..." << endl;
+		addMinimumAmountOfCircles();
+		cout << "step3 - adjustSurface ..." << endl;
+		adjustSurface();
+		cout << "step4 - mixBalls..." << endl;
+		mixBalls2D();
+		cout << "step5 - fillSpace..." << endl;
+		fill2dSpace();
+		cout << "DONE!" << endl;
+	}
+	else {
+		cout << "3D SIMULATION" << endl;
+		cout << "step1 - setUnmixedGrid..." << endl;
+		setUnmixedGrid3D();
+		cout << "step2 - setBalls..." << endl;
+		setBalls3D();
+		cout << "step3 - mixBalls..." << endl;
+		mixBalls3D();
+		//cout << "step4 - reduceBalls ..." << endl;
+		//reduceBalls3D();
+		cout << "step5 - fillSpace..." << endl;
+		fill3dSpace();
+		cout << "DONE!" << endl;
+	}
+
 	return false;
 }
 
@@ -162,7 +176,7 @@ void CircullarInclusionsAddition::setBalls3D()
 		activeBalls.push_back(balls[randomindex]);
 		volume.countVolume(radius, balls[randomindex].getX(), balls[randomindex].getY(), balls[randomindex].getZ());
 		balls.erase(balls.begin() + randomindex);
-	} while (volume.getActualVolume() < (totalVolume)* desiredVolume / 100);
+	} while (volume.getActualVolume() < (totalVolume)* desiredVolume / 100 && balls.size() > 0);
 }
 
 void CircullarInclusionsAddition::adjustSurface()
@@ -311,7 +325,7 @@ void CircullarInclusionsAddition::mixBalls2D()
 	}
 }
 
-void CircullarInclusionsAddition::mixBals3D()
+void CircullarInclusionsAddition::mixBalls3D()
 {
 	int counter = 0;
 	Ball movedBall;
@@ -335,13 +349,26 @@ void CircullarInclusionsAddition::mixBals3D()
 			}
 			else
 			{
-				counter++;
+				cout<< counter++<<endl;
 				//if(movedBall.z)
 				activeBalls[j] = movedBall;
 			}
 		}
 
 	}
+}
+
+void CircullarInclusionsAddition::reduceBalls3D()
+{
+	cout << "Pre-Globules: " << activeBalls.size() << endl;
+
+	while (activeBalls.size() > 260)
+	{
+		int randomIdx = rand() % activeBalls.size();
+		activeBalls.erase(activeBalls.begin() + randomIdx);
+	}
+
+	cout << "Post-Globules: " << activeBalls.size() << endl;
 }
 
 bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall, Direction dir)
@@ -471,6 +498,31 @@ void CircullarInclusionsAddition::fill2dSpace()
 			ballSchemas.push_back(schema);
 		}
 		fill2dBall(schema, activeBalls[i].getX(), activeBalls[i].getY(), activeBalls[i].getRadius());
+	}
+}
+
+void CircullarInclusionsAddition::fill3dSpace()
+{
+	for(int i = 0; i< activeBalls.size(); i++)
+	{
+		auto startx = activeBalls[i].getX() - radius > 0 ? activeBalls[i].getX() - radius : 0;
+		auto endx = activeBalls[i].getX() + radius < xSize ? activeBalls[i].getX() + radius : xSize;
+		auto starty = activeBalls[i].getY() - radius > 0 ? activeBalls[i].getY() - radius : 0;
+		auto endy = activeBalls[i].getY() + radius <0 ? activeBalls[i].getY() + radius : ySize;
+		auto startz = activeBalls[i].getZ() - radius > 0 ? activeBalls[i].getZ() - radius : 0;
+		auto endz = activeBalls[i].getZ() + radius < 0 ? activeBalls[i].getZ() + radius : zSize;
+		for (int i = startx; i < endx; i++)
+		{
+			for (int j = starty; j < endy; j++)
+			{
+				for (int k = startz; k < endz; k++)
+				{
+					if (sqrt(pow(activeBalls[i].getX() - i, 2) + pow(activeBalls[i].getY() - j, 2)
+						+ pow(activeBalls[i].getZ() - k, 2)) <= radius)
+						this->getInclusionsSpace()->getCells()[i][j][k]->setId(1);
+				}
+			}
+		}
 	}
 }
 
