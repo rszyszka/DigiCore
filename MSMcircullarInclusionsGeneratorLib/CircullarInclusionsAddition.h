@@ -33,9 +33,9 @@ private:
 	void fill3dSpace();
 	BallSchema2D* create2DSchema(int radius);
 	void fill2dBall(BallSchema2D*, int x, int y, int radius);
-	void ballDirectionInitializer(Ball ball);
-	void directionSetter(Ball ball, Ball notMovedBall);
-	void moveBall(Ball ball);
+	void ballDirectionInitializer(Ball &ball);
+	void directionSetter(Ball &ball, Ball &notMovedBall);
+	void moveBall(Ball &ball);
 public:
 	__declspec(dllexport) CircullarInclusionsAddition(Space *space);
 	__declspec(dllexport) bool performStep() override;

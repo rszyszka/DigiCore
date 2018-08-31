@@ -8,4 +8,5 @@ enum Direction
 	Forward = 5,
 	Backward = 6,
 	Immovable = 7,
+	Default = 0,
 };

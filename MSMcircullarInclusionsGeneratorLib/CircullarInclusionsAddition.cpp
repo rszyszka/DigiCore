@@ -349,7 +349,7 @@ void CircullarInclusionsAddition::mixBalls3D()
 			}
 			else
 			{
-				cout<< counter++<<endl;
+				counter++;
 				//if(movedBall.z)
 				activeBalls[j] = movedBall;
 			}
@@ -454,7 +454,7 @@ bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall)
 		return true;
 	if ((movedBall.getZ() + radius >= zSize || movedBall.getZ() - radius < 0) && movedBall.getDirZ() != Immovable)
 		return true;
-	for(int i = 0 ; i < activeBalls.size(); i<activeBalls.size())
+	for(int i = 0 ; i < activeBalls.size(); i++)
 	{
 		if (((activeBalls[i].getX() >= rangexu && activeBalls[i].getX() <= rangexd) ||
 			(activeBalls[i].getY() >= rangeyu && activeBalls[i].getY() <= rangeyd)
@@ -511,15 +511,15 @@ void CircullarInclusionsAddition::fill3dSpace()
 		auto endy = activeBalls[i].getY() + radius <0 ? activeBalls[i].getY() + radius : ySize;
 		auto startz = activeBalls[i].getZ() - radius > 0 ? activeBalls[i].getZ() - radius : 0;
 		auto endz = activeBalls[i].getZ() + radius < 0 ? activeBalls[i].getZ() + radius : zSize;
-		for (int i = startx; i < endx; i++)
+		for (int l = startx; l < endx; l++)
 		{
 			for (int j = starty; j < endy; j++)
 			{
 				for (int k = startz; k < endz; k++)
 				{
-					if (sqrt(pow(activeBalls[i].getX() - i, 2) + pow(activeBalls[i].getY() - j, 2)
+					if (sqrt(pow(activeBalls[i].getX() - l, 2) + pow(activeBalls[i].getY() - j, 2)
 						+ pow(activeBalls[i].getZ() - k, 2)) <= radius)
-						this->getInclusionsSpace()->getCells()[i][j][k]->setId(1);
+						this->getInclusionsSpace()->getCells()[l][j][k]->setId(1);
 				}
 			}
 		}
@@ -575,7 +575,7 @@ void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y,
 	}
 }
 
-void CircullarInclusionsAddition::ballDirectionInitializer(Ball ball)
+void CircullarInclusionsAddition::ballDirectionInitializer(Ball &ball)
 {
 	bool isOnBoundary = false;
 	if (ball.getX() + radius >= xSize)
@@ -622,7 +622,7 @@ void CircullarInclusionsAddition::ballDirectionInitializer(Ball ball)
 	}
 }
 
-void CircullarInclusionsAddition::directionSetter(Ball ball, Ball notMovedBall)
+void CircullarInclusionsAddition::directionSetter(Ball &ball, Ball &notMovedBall)
 {
 	if (ball.getX() != notMovedBall.getX()&&notMovedBall.getDirX() != Immovable)
 		notMovedBall.setDirX(notMovedBall.getDirX() == Left ? Right :Left);
@@ -632,7 +632,7 @@ void CircullarInclusionsAddition::directionSetter(Ball ball, Ball notMovedBall)
 		notMovedBall.setDirZ(notMovedBall.getDirZ() == Forward ? Backward : Forward);
 }
 
-void CircullarInclusionsAddition::moveBall(Ball ball)
+void CircullarInclusionsAddition::moveBall(Ball &ball)
 {
 	switch (rand() % 3 + 1 )
 	{
