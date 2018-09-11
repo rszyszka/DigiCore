@@ -41,6 +41,10 @@ Volume::Volume(int radius, int sizeX, int sizeY, int sizeZ) : PI(acos(-1.0))
 	testNoWall = 0;
 	testOneWall = 0;
 	actualVolume = 0;
+
+	xSize = sizeX;
+	ySize = sizeY;
+	zSize = sizeZ;
 }
 
 int Volume::countVolume(int radius, int x, int y, int z)

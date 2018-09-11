@@ -11,11 +11,11 @@ Ball::Ball() : Point()
 
 Ball::Ball(int x, int y, int z) : Point(x,y,z)
 {
-	this->dirX = Immovable;
-	this->dirY = Immovable;
-	this->dirZ = Immovable;
+	this->dirX = Default;
+	this->dirY = Default;
+	this->dirZ = Default;
 	this->side = false;
-	this->radius = 2;
+	this->radius = 6;
 }
 
 Ball::Ball(int x, int y, bool side) : Point(x,y)

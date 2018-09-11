@@ -43,8 +43,8 @@ void Controller::StartProcess()
 
 void Controller::PrepareProcess(int* argc, char** argv[])
 {
-	int sizeX = 1000;
-	int sizeY = 1000;
+	int sizeX = 100;
+	int sizeY = 100;
 	int sizeZ = 1;
 	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
 	
@@ -100,7 +100,7 @@ void Controller::CloseProcess()
 		{
 			for (int j = 0; j < space->getXsize(); j++)
 			{
-				out << circullarInclusionsAddition->getInclusionsSpace()->getCells()[i][j][k]->getId() << " ";
+				out << circullarInclusionsAddition->getInclusionsSpace()->getCells()[j][i][k]->getId() << " ";
 			}
 			out << endl;
 		}
