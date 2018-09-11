@@ -10,10 +10,6 @@ class CircullarInclusionsAddition : public Simulation
 {
 private:
 	int progress;
-	Space* inclusionsSpace;
-	int xSize;
-	int ySize;
-	int zSize;
 	int radius, desiredSurface, desiredVolume;
 	vector<Ball> activeBalls;
 	vector<Ball> balls;
@@ -32,7 +28,7 @@ private:
 	void fill2dSpace();
 	void fill3dSpace();
 	BallSchema2D* create2DSchema(int radius);
-	void fill2dBall(BallSchema2D*, int x, int y, int radius);
+	void fill2dBall(BallSchema2D*, int x, int y, int radius, int id);
 	void ballDirectionInitializer(Ball &ball);
 	void directionSetter(Ball &ball, Ball &notMovedBall);
 	void moveBall(Ball &ball);
@@ -40,7 +36,6 @@ public:
 	__declspec(dllexport) CircullarInclusionsAddition(Space *space);
 	__declspec(dllexport) bool performStep() override;
 	__declspec(dllexport) int getProgress() override;
-	__declspec(dllexport) Space* getInclusionsSpace();
 	__declspec(dllexport) vector<Ball> getActiveBalls();
 	__declspec(dllexport) vector<Ball> getBalls();
 };

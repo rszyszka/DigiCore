@@ -6,24 +6,19 @@ CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simula
 {
 	srand(time(nullptr));
 
-	xSize = space->getXsize();
-	ySize = space->getYsize();
-	zSize = space->getZsize();
-
 	radius = 10;
 	desiredSurface = (int)(10 * xSize * ySize / (double)100);
 	desiredVolume = 25;
 
 	this->surface = new Surface(radius, xSize, ySize);
 
-	inclusionsSpace = new Space(space->getXsize(), space->getYsize(), space->getZsize(), space->getNeighborhood());
 	progress = 100 / (xSize * ySize * zSize);
 }
 
 bool CircullarInclusionsAddition::performStep()
 {
 
-	if (!this->inclusionsSpace->is3Dspace()) {
+	if (!this->space->is3Dspace()) {
 		cout << "2D SIMULATION" << endl;
 		cout << "step1 - setUnmixedGrid..." << endl;
 		setUnmixedGrid2D();
@@ -122,7 +117,6 @@ void CircullarInclusionsAddition::setUnmixedGrid3D()
 	}
 
 	int portion = sizeBallsX / 3;
-	cout<<"x-length: "<<sizeBallsX<<endl;
 
 	for (int i = 0; i < sizeBallsZ; i++) //here
 	{
@@ -404,6 +398,7 @@ bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall, Direction dir)
 		if (((activeBall.getX() >= rangexu && activeBall.getX() <= rangexd) ||
 			(activeBall.getY() >= rangeyu && activeBall.getY() <= rangeyd)))
 		{
+			//TODO: Mozna zrezygnowac z tego ifa
 			if (activeBall.isSide() != movedBall.isSide())
 			{
 				if (!(activeBall.getX() == movedBall.getX() - xtranslation && activeBall.getY() == movedBall.getY() - ytranslation))
@@ -478,6 +473,7 @@ bool CircullarInclusionsAddition::checkIfInRange(Ball movedBall)
 
 void CircullarInclusionsAddition::fill2dSpace()
 {
+	int currentId = 1;
 	vector<BallSchema2D*> ballSchemas;
 	for (auto &activeBall : activeBalls)
 	{
@@ -495,12 +491,14 @@ void CircullarInclusionsAddition::fill2dSpace()
 			schema = create2DSchema(activeBall.getRadius());
 			ballSchemas.push_back(schema);
 		}
-		fill2dBall(schema, activeBall.getX(), activeBall.getY(), activeBall.getRadius());
+		fill2dBall(schema, activeBall.getX(), activeBall.getY(), activeBall.getRadius(), currentId);
+		currentId++;
 	}
 }
 
 void CircullarInclusionsAddition::fill3dSpace()
 {
+	int currentId = 1;
 	for (auto &ball : activeBalls)
 	{
 		auto startx = ball.getX() - radius > 0 ? ball.getX() - radius : 0;
@@ -516,11 +514,15 @@ void CircullarInclusionsAddition::fill3dSpace()
 				for (int k = startz; k < endz; k++)
 				{
 					if (sqrt(pow(ball.getX() - i, 2) + pow(ball.getY() - j, 2)
-						+ pow(ball.getZ() - k, 2)) <= radius)
-						this->getInclusionsSpace()->getCells()[i][j][k]->setId(1);
+						+ pow(ball.getZ() - k, 2)) <= radius) 
+					{
+						this->space->getCells()[i][j][k]->setId(currentId);
+						this->space->getCells()[i][j][k]->setPhase(Inclusion);
+					}
 				}
 			}
 		}
+		currentId++;
 	}
 }
 
@@ -556,7 +558,7 @@ BallSchema2D * CircullarInclusionsAddition::create2DSchema(int radius)
 	return schema;
 }
 
-void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y, int radius)
+void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y, int radius, int id)
 {
 	for (int i = 0; i < schema->getSize(); i++)
 	{
@@ -564,9 +566,13 @@ void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y,
 		{
 			if (!(x + i - radius >= xSize || x + i - radius < 0 || y + j - radius >= ySize || y + j - radius < 0))
 			{
-				if (this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0]->getId() == 0)
+				if (this->space->getCells()[x + i - radius][y + j - radius][0]->getId() == 0)
 				{
-					this->getInclusionsSpace()->getCells()[x + i - radius][y + j - radius][0]->setId((int)schema->getSchema()[i][j]);
+					if (schema->getSchema()[i][j])
+					{
+						this->space->getCells()[x + i - radius][y + j - radius][0]->setId(id);
+						this->space->getCells()[x + i - radius][y + j - radius][0]->setPhase(Inclusion);
+					}
 				}
 			}
 		}
@@ -654,11 +660,6 @@ void CircullarInclusionsAddition::moveBall(Ball &ball)
 int CircullarInclusionsAddition::getProgress()
 {
 	return progress;
-}
-
-Space * CircullarInclusionsAddition::getInclusionsSpace()
-{
-	return inclusionsSpace;
 }
 
 vector<Ball> CircullarInclusionsAddition::getActiveBalls()
