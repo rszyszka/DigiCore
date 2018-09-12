@@ -36,15 +36,15 @@ Controller::Controller()
 
 void Controller::StartProcess()
 {
-	/*grainGrowth->simulateContinuously();
-	lamellarPhaseAddition->simulateContinuously();*/
-	circullarInclusionsAddition->simulateContinuously();
+	grainGrowth->simulateContinuously();
+	lamellarPhaseAddition->simulateContinuously();
+	//circullarInclusionsAddition->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
 {
-	int sizeX = 1000;
-	int sizeY = 1000;
+	int sizeX = 20;
+	int sizeY = 20;
 	int sizeZ = 1;
 	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
 	
@@ -63,7 +63,7 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 void Controller::CloseProcess()
 {
 	cout << "Finalize" << endl;
-	/*
+	
 	//Just for test
 	for (int k = 0; k < space->getZsize(); k++)
 	{
@@ -78,7 +78,7 @@ void Controller::CloseProcess()
 		cout << endl;
 	}
 
-
+	
 	for (int k = 0; k < space->getZsize(); k++)
 	{
 		for (int i = 0; i < space->getYsize(); i++)
@@ -91,9 +91,9 @@ void Controller::CloseProcess()
 		}
 		cout << endl;
 	}
-	*/
+	
 
-	ofstream out("result.txt");
+	/*ofstream out("result.txt");
 	for (int k = 0; k < space->getZsize(); k++)
 	{
 		for (int i = 0; i < space->getYsize(); i++)
@@ -109,6 +109,6 @@ void Controller::CloseProcess()
 		}
 		out << endl;
 	}
-	out.close();
+	out.close();*/
 	getchar();
 }

@@ -913,11 +913,13 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 	int y1 = k2.getY();
 	int d, dx, dy, ai, bi, xi, yi;
 	int x = x0, y = y0;
-	if (x0 < x1) {
+	if (x0 < x1) 
+	{
 		xi = 1;
 		dx = x1 - x0;
 	}
-	else {
+	else 
+	{
 		xi = -1;
 		dx = x0 - x1;
 	}
@@ -926,22 +928,28 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 		yi = 1;
 		dy = y1 - y0;
 	}
-	else {
+	else 
+	{
 		yi = -1;
 		dy = y0 - y1;
 	}
 
 	if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
-		&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) {
+		&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) 
+	{
 		this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+		//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
 	}
 
-	if (dx > dy) {
+	if (dx > dy) 
+	{
 		ai = (dy - dx) * 2;
 		bi = dy * 2;
 		d = bi - dx;
-		while (x != x1) {
-			if (d >= 0) {
+		while (x != x1) 
+		{
+			if (d >= 0) 
+			{
 				x += xi;
 				y += yi;
 				d += ai;
@@ -972,25 +980,31 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 					return;
 
 			if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
-	/*check*/			&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z] == 0) {
+	/*check*/			&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z] == 0) 
+			{
 	/*tutaj [k]*/			this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+							//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
 			}
 		}
 	}
-	else {
+	else 
+	{
 		ai = (dx - dy) * 2;
 		bi = dx * 2;
 		d = bi - dy;
 		// pêtla po kolejnych y
-		while (y != y1) {
+		while (y != y1) 
+		{
 			// test wspó³czynnika
-			if (d >= 0) {
+			if (d >= 0) 
+			{
 				x += xi;
 				y += yi;
 				d += ai;
 
 			}
-			else {
+			else 
+			{
 				d += bi;
 				y += yi;
 			}
@@ -1016,8 +1030,10 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 			//return; 
 
 			if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
-				&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) {
+				&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) 
+			{				
 				this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+				//cout <<"x: "<< (x + X) % X << " y: " << (y + Y) % Y << " z: "<< (k + Z) % Z << endl;
 			}
 		}
 	}

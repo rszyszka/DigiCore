@@ -8,5 +8,6 @@ enum Phase
 	Martensite,
 	Pearlite,
 	Liquid,
-	Inclusion
+	Inclusion,
+	Twin
 };
