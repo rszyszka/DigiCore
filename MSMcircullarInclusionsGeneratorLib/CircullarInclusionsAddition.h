@@ -32,6 +32,7 @@ private:
 	void ballDirectionInitializer(Ball &ball);
 	void directionSetter(Ball &ball, Ball &notMovedBall);
 	void moveBall(Ball &ball);
+
 public:
 	__declspec(dllexport) CircullarInclusionsAddition(Space *space, int radius, int desiredVolume);
 	__declspec(dllexport) bool performStep() override;

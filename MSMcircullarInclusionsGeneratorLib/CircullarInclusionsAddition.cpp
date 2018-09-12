@@ -566,7 +566,7 @@ void CircullarInclusionsAddition::fill2dBall(BallSchema2D *schema, int x, int y,
 		{
 			if (!(x + i - radius >= xSize || x + i - radius < 0 || y + j - radius >= ySize || y + j - radius < 0))
 			{
-				if (this->space->getCells()[x + i - radius][y + j - radius][0]->getId() == 0)
+				if (this->space->getCells()[x + i - radius][y + j - radius][0]->getPhase() != Inclusion)
 				{
 					if (schema->getSchema()[i][j])
 					{
