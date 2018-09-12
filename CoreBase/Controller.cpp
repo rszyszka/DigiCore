@@ -42,13 +42,13 @@ void Controller::StartProcess()
 	grainGrowth->simulateContinuously();
 	cout << "adding lammelar phase..." << endl;
 	lamellarPhaseAddition->simulateContinuously();
-	//circullarInclusionsAddition->simulateContinuously();
+	circullarInclusionsAddition->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
 {
-	int sizeX = 50;
-	int sizeY = 50;
+	int sizeX = 100;
+	int sizeY = 100;
 	int sizeZ = 10;
 	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
 	
@@ -58,8 +58,8 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
 	nucleonsGenerator->putNucleonsRandomly(space, 9);
 
-	lamellarPhaseAddition = new LamellarPhaseGenerator(space, 2);
-	circullarInclusionsAddition = new CircullarInclusionsAddition(space,6,25);
+	lamellarPhaseAddition = new LamellarPhaseGenerator(space, 3);
+	circullarInclusionsAddition = new CircullarInclusionsAddition(space,4,4);
 
 }
 
