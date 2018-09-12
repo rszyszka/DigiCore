@@ -11,8 +11,8 @@ class Controller
 private:
 	Space * space;
 	Simulation * grainGrowth;
-	LamellarPhaseGenerator* lamellarPhaseAddition;
-	CircullarInclusionsAddition* circullarInclusionsAddition;
+	Simulation * lamellarPhaseAddition;
+	Simulation * circullarInclusionsAddition;
 	random_device rd;
 
 public:

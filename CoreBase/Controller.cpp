@@ -27,6 +27,8 @@ Controller::~Controller()
 	delete space;
 	delete grainGrowth;
 	delete lamellarPhaseAddition;
+	delete circullarInclusionsAddition;
+
 }
 
 Controller::Controller()
@@ -36,26 +38,28 @@ Controller::Controller()
 
 void Controller::StartProcess()
 {
+	cout << "growing the grains..." << endl;
 	grainGrowth->simulateContinuously();
+	cout << "adding lammelar phase..." << endl;
 	lamellarPhaseAddition->simulateContinuously();
 	//circullarInclusionsAddition->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
 {
-	int sizeX = 20;
-	int sizeY = 20;
-	int sizeZ = 1;
+	int sizeX = 50;
+	int sizeY = 50;
+	int sizeZ = 10;
 	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
 	
 	//simulation = new McGrainGrowth(space, 10, 2, 0.3);
 	
 	grainGrowth = new GrainGrowth(space);
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
-	nucleonsGenerator->putNucleonsRandomly(space, 3);
+	nucleonsGenerator->putNucleonsRandomly(space, 9);
 
-	lamellarPhaseAddition = new LamellarPhaseGenerator(space);
-	circullarInclusionsAddition = new CircullarInclusionsAddition(space);
+	lamellarPhaseAddition = new LamellarPhaseGenerator(space, 2);
+	circullarInclusionsAddition = new CircullarInclusionsAddition(space,6,25);
 
 }
 
@@ -65,42 +69,32 @@ void Controller::CloseProcess()
 	cout << "Finalize" << endl;
 	
 	//Just for test
+	ofstream out1("twins.txt");
 	for (int k = 0; k < space->getZsize(); k++)
 	{
 		for (int i = 0; i < space->getYsize(); i++)
 		{
 			for (int j = 0; j < space->getXsize(); j++)
 			{
-				cout << space->getCells()[i][j][k]->getId() << " ";
+				if (space->getCells()[j][i][k]->getPhase() != Twin)
+					out1 << space->getCells()[j][i][k]->getId() << " ";
+				else
+					out1 << " " << " ";
 			}
-			cout << endl;
+			out1 << endl;
 		}
-		cout << endl;
+		out1 << endl;
 	}
+	out1.close();
 
-	
+	ofstream out("inclusions.txt");
 	for (int k = 0; k < space->getZsize(); k++)
 	{
 		for (int i = 0; i < space->getYsize(); i++)
 		{
 			for (int j = 0; j < space->getXsize(); j++)
 			{
-				cout << lamellarPhaseAddition->getSecondPhaseSpace()->getCells()[i][j][k]->getId() << " ";
-			}
-			cout << endl;
-		}
-		cout << endl;
-	}
-	
-
-	/*ofstream out("result.txt");
-	for (int k = 0; k < space->getZsize(); k++)
-	{
-		for (int i = 0; i < space->getYsize(); i++)
-		{
-			for (int j = 0; j < space->getXsize(); j++)
-			{
-				if (circullarInclusionsAddition->getSpace()->getCells()[j][i][k]->getPhase() == Inclusion)
+				if (space->getCells()[j][i][k]->getPhase() == Inclusion)
 					out << 1 << " ";
 				else
 					out << 0 << " ";
@@ -109,6 +103,6 @@ void Controller::CloseProcess()
 		}
 		out << endl;
 	}
-	out.close();*/
+	out.close();
 	getchar();
 }

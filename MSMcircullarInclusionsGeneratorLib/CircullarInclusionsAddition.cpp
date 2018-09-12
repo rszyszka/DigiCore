@@ -2,13 +2,13 @@
 #include <iostream>
 #include "Volume.h"
 
-CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space) : Simulation(space)
+CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space, int radius, int desiredVolume) : Simulation(space)
 {
 	srand(time(nullptr));
 
-	radius = 10;
+	this->radius = radius;
 	desiredSurface = (int)(10 * xSize * ySize / (double)100);
-	desiredVolume = 25;
+	this->desiredVolume = desiredVolume;
 
 	this->surface = new Surface(radius, xSize, ySize);
 

@@ -62,6 +62,7 @@ bool GrainGrowth::performStep()
 	updateSpace();
 
 	progress = 100 * progress_counter / (xSize * ySize * zSize);
+	cout << progress << " ";
 
 	return changed;
 }

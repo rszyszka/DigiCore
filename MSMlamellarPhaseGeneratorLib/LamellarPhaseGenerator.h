@@ -9,8 +9,6 @@ class LamellarPhaseGenerator : public Simulation
 private:
 
 	int progress;
-
-	Space *secondPhaseSpace;
 	int numberOfGrains;
 
 	const double pi = acos(-1.0);
@@ -19,7 +17,7 @@ private:
 	vector<Grain> twinsAngles;
 
 	int grainIndex = 1;
-	int twinWidth = 1;
+	int twinWidth;
 
 	void KQ4_eul(double r[5], double ang[4]);
 	void Keul_Q4(double euler[4], double q[5]);
@@ -43,10 +41,9 @@ private:
 	int getLimitZ2P(int);
 	
 public:
-	__declspec(dllexport) LamellarPhaseGenerator(Space *space);
+	__declspec(dllexport) LamellarPhaseGenerator(Space *space, int twinWidth);
 	__declspec(dllexport) bool performStep() override;
 	__declspec(dllexport) int getProgress() override;
-	__declspec(dllexport) Space* getSecondPhaseSpace();
 	__declspec(dllexport) vector<Grain> getGrainsAngles();
 	__declspec(dllexport) vector<Grain> getTwinsAngles();
 	__declspec(dllexport) void computeAngles(double, int, int);

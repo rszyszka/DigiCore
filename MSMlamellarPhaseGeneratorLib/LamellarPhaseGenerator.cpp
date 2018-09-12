@@ -2,12 +2,12 @@
 #include <ctime>
 #include <iostream>
 
-LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space) : Simulation(space)
+LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space, int twinWidth) : Simulation(space)
 {
 	srand(time(nullptr));
 	numberOfGrains = this->space->getMaxId();
-	secondPhaseSpace = new Space(space->getXsize(), space->getYsize(), space->getZsize(), space->getNeighborhood());
-	
+	this->twinWidth = twinWidth;
+
 	Grain a;
 	grainsAngles.push_back(a); //id == 0;
 	twinsAngles.push_back(a); //id == 0;
@@ -65,24 +65,24 @@ bool LamellarPhaseGenerator::performStep()
 		z1 = getLimitZ1(grainIndex);
 		z2 = getLimitZ2(grainIndex);
 
-		if (this->getSpace()->getBoundaryConditions() == BoundaryConditions(Periodic)) {
+		if (this->space->getBoundaryConditions() == Periodic) {
 			if (x1 == 0)
 				x1 = getLimitX1P(grainIndex);
 
-			if (x2 == this->getSpace()->getXsize() - 1)
-				x2 = getLimitX2P(grainIndex) + this->getSpace()->getXsize();
+			if (x2 == this->space->getXsize() - 1)
+				x2 = getLimitX2P(grainIndex) + this->space->getXsize();
 
 			if (y1 == 0)
 				y1 = getLimitY1P(grainIndex);
 
-			if (y2 == this->getSpace()->getYsize() - 1)
-				y2 = getLimitY2P(grainIndex) + this->getSpace()->getYsize();
+			if (y2 == this->space->getYsize() - 1)
+				y2 = getLimitY2P(grainIndex) + this->space->getYsize();
 
-			if (this->getSpace()->is3Dspace() && z1 == 0)
+			if (this->space->is3Dspace() && z1 == 0)
 				z1 = getLimitZ1P(grainIndex);
 
-			if (this->getSpace()->is3Dspace() && z2 == this->getSpace()->getZsize() - 1)
-				z2 = getLimitZ2P(grainIndex) + this->getSpace()->getZsize();
+			if (this->space->is3Dspace() && z2 == this->space->getZsize() - 1)
+				z2 = getLimitZ2P(grainIndex) + this->space->getZsize();
 		}
 
 		Point s1, s2;
@@ -105,7 +105,7 @@ bool LamellarPhaseGenerator::performStep()
 			}
 
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setY(s1.getY() + 1);
 				s2.setY(s2.getY() + 1);
 				midpointLine(s1, s2, grainIndex);
@@ -115,7 +115,7 @@ bool LamellarPhaseGenerator::performStep()
 			sx1 = s1;
 			sx2 = s2;
 
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setY(s1.getY() - d);
 					sx2.setY(s2.getY() - d);
@@ -155,7 +155,7 @@ bool LamellarPhaseGenerator::performStep()
 
 
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setY(s1.getY() - 1);
 				s2.setY(s2.getY() - 1);
 				midpointLine(s1, s2, grainIndex);
@@ -165,7 +165,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setY(s1.getY() - d);
 					sx2.setY(s2.getY() - d);
@@ -208,7 +208,7 @@ bool LamellarPhaseGenerator::performStep()
 			}
 
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setX(s1.getX() + 1);
 				s2.setX(s2.getX() + 1);
 				midpointLine(s1, s2, grainIndex);
@@ -218,7 +218,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setX(s1.getX() + d);
 					sx2.setX(s2.getX() + d);
@@ -260,7 +260,7 @@ bool LamellarPhaseGenerator::performStep()
 				s1.setX(int(s1.getX() - double(x2 - x1)*0.25 + randV));
 			}
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setX(s1.getX() - 1);
 				s2.setX(s2.getX() - 1);
 				midpointLine(s1, s2, grainIndex);
@@ -269,7 +269,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setX(s1.getX() - d);
 					sx2.setX(s2.getX() - d);
@@ -298,7 +298,7 @@ bool LamellarPhaseGenerator::performStep()
 				s1.setX(int(s1.getX() - double(x2 - x1)*0.25 + randV));
 			}
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setX(s1.getX() + 1);
 				s2.setX(s2.getX() + 1);
 				midpointLine(s1, s2, grainIndex);
@@ -307,7 +307,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setX(s1.getX() + d);
 					sx2.setX(s2.getX() + d);
@@ -351,7 +351,7 @@ bool LamellarPhaseGenerator::performStep()
 			}
 
 			//2d
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setX(s1.getX() + 1);
 				s2.setX(s2.getX() + 1);
 				midpointLine(s1, s2, grainIndex);
@@ -361,7 +361,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setX(s1.getX() + d);
 					sx2.setX(s2.getX() + d);
@@ -403,7 +403,7 @@ bool LamellarPhaseGenerator::performStep()
 				s1.setY(int(s1.getY() - double(y2 - y1)*0.25 + randV));
 			}
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setY(s1.getY() + 1);
 				s2.setY(s2.getY() + 1);
 				midpointLine(s1, s2, grainIndex);
@@ -414,7 +414,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setY(s1.getY() + d);
 					sx2.setY(s2.getY() + d);
@@ -424,7 +424,7 @@ bool LamellarPhaseGenerator::performStep()
 				}
 			}
 
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					s1.setY(s1.getY() + 1);
 					s2.setY(s2.getY() + 1);
@@ -467,7 +467,7 @@ bool LamellarPhaseGenerator::performStep()
 				s1.setY(int(s1.getY() - double(y2 - y1)*0.25 + randV));
 			}
 
-			for (int d = 0; d <= twinWidth && !this->getSpace()->is3Dspace(); ++d) {
+			for (int d = 0; d <= twinWidth && !this->space->is3Dspace(); ++d) {
 				s1.setY(s1.getY() + 1);
 				s2.setY(s2.getY() + 1);
 				midpointLine(s1, s2, grainIndex);
@@ -477,7 +477,7 @@ bool LamellarPhaseGenerator::performStep()
 			Point sx1, sx2;
 			sx1 = s1;
 			sx2 = s2;
-			for (int l = z1; l <= z2 && this->getSpace()->is3Dspace(); l++) {
+			for (int l = z1; l <= z2 && this->space->is3Dspace(); l++) {
 				for (int d = 0; d <= twinWidth; ++d) {
 					sx1.setY(s1.getY() + d);
 					sx2.setY(s2.getY() + d);
@@ -494,8 +494,6 @@ bool LamellarPhaseGenerator::performStep()
 	}
 	return false;
 }
-
-Space * LamellarPhaseGenerator::getSecondPhaseSpace(){ return this->secondPhaseSpace; }
 
 vector<Grain> LamellarPhaseGenerator::getGrainsAngles() { return this->grainsAngles; }
 vector<Grain> LamellarPhaseGenerator::getTwinsAngles() { return this->twinsAngles; }
@@ -554,7 +552,7 @@ void LamellarPhaseGenerator::computeAngles(double alpha, int grainId, int twinId
 	phi[2] = -90.0;
 	phi[3] = -90.0;
 
-	if (this->getSpace()->is3Dspace()) {
+	if (this->space->is3Dspace()) {
 		phi[2] = -double(rand() % 90);
 		phi[3] = -double(rand() % 90);
 	}
@@ -598,10 +596,10 @@ void LamellarPhaseGenerator::computeAngles(double alpha, int grainId, int twinId
 
 int LamellarPhaseGenerator::getLimitX1(int grainIndex)
 {
-	for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int i = 0; i < this->space->getXsize(); ++i) {
+		for (int j = 0; j < this->space->getYsize(); ++j) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return i;
 				}
 			}
@@ -612,10 +610,10 @@ int LamellarPhaseGenerator::getLimitX1(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitX2(int grainIndex)
 {
-	for (int i = this->getSpace()->getXsize() - 1; i >= 0; --i) {
-		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int i = this->space->getXsize() - 1; i >= 0; --i) {
+		for (int j = 0; j < this->space->getYsize(); ++j) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return i;
 				}
 			}
@@ -626,10 +624,10 @@ int LamellarPhaseGenerator::getLimitX2(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitY1(int grainIndex)
 {
-	for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int j = 0; j < this->space->getYsize(); ++j) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return j;
 				}
 			}
@@ -640,10 +638,10 @@ int LamellarPhaseGenerator::getLimitY1(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitY2(int grainIndex)
 {
-	for (int j = this->getSpace()->getYsize() - 1; j >= 0; --j) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int j = this->space->getYsize() - 1; j >= 0; --j) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return j;
 				}
 			}
@@ -654,10 +652,10 @@ int LamellarPhaseGenerator::getLimitY2(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitZ1(int grainIndex)
 {
-	for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int k = 0; k < this->space->getZsize(); ++k) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int j = 0; j < this->space->getYsize(); ++j) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return k;
 				}
 			}
@@ -668,10 +666,10 @@ int LamellarPhaseGenerator::getLimitZ1(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitZ2(int grainIndex)
 {
-	for (int k = this->getSpace()->getZsize() - 1; k >= 0; --k) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int k = this->space->getZsize() - 1; k >= 0; --k) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int j = 0; j < this->space->getYsize(); ++j) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return k;
 				}
 			}
@@ -682,10 +680,10 @@ int LamellarPhaseGenerator::getLimitZ2(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitX1P(int grainIndex)
 {
-	for (int i = this->getSpace()->getXsize() / 2; i < this->getSpace()->getXsize(); ++i) {
-		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int i = this->space->getXsize() / 2; i < this->space->getXsize(); ++i) {
+		for (int j = 0; j < this->space->getYsize(); ++j) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return i;
 				}
 			}
@@ -697,10 +695,10 @@ int LamellarPhaseGenerator::getLimitX1P(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitX2P(int grainIndex)
 {
-	for (int i = this->getSpace()->getXsize() / 2; i >= 0; --i) {
-		for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int i = this->space->getXsize() / 2; i >= 0; --i) {
+		for (int j = 0; j < this->space->getYsize(); ++j) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return i;
 				}
 			}
@@ -712,10 +710,10 @@ int LamellarPhaseGenerator::getLimitX2P(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitY1P(int grainIndex)
 {
-	for (int j = this->getSpace()->getYsize() / 2; j < this->getSpace()->getYsize(); ++j) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int j = this->space->getYsize() / 2; j < this->space->getYsize(); ++j) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return j;
 				}
 			}
@@ -727,10 +725,10 @@ int LamellarPhaseGenerator::getLimitY1P(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitY2P(int grainIndex)
 {
-	for (int j = this->getSpace()->getYsize() / 2; j >= 0; --j) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int k = 0; k < this->getSpace()->getZsize(); ++k) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int j = this->space->getYsize() / 2; j >= 0; --j) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int k = 0; k < this->space->getZsize(); ++k) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return j;
 				}
 			}
@@ -742,10 +740,10 @@ int LamellarPhaseGenerator::getLimitY2P(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitZ1P(int grainIndex)
 {
-	for (int k = this->getSpace()->getZsize() / 2; k < this->getSpace()->getZsize(); ++k) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int k = this->space->getZsize() / 2; k < this->space->getZsize(); ++k) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int j = 0; j < this->space->getYsize(); ++j) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return k;
 				}
 			}
@@ -757,10 +755,10 @@ int LamellarPhaseGenerator::getLimitZ1P(int grainIndex)
 
 int LamellarPhaseGenerator::getLimitZ2P(int grainIndex)
 {
-	for (int k = this->getSpace()->getZsize() / 2; k >= 0; --k) {
-		for (int i = 0; i < this->getSpace()->getXsize(); ++i) {
-			for (int j = 0; j < this->getSpace()->getYsize(); ++j) {
-				if (this->getSpace()->getCells()[i][j][k]->getId() == grainIndex) {
+	for (int k = this->space->getZsize() / 2; k >= 0; --k) {
+		for (int i = 0; i < this->space->getXsize(); ++i) {
+			for (int j = 0; j < this->space->getYsize(); ++j) {
+				if (this->space->getCells()[i][j][k]->getId() == grainIndex) {
 					return k;
 				}
 			}
@@ -902,9 +900,9 @@ void LamellarPhaseGenerator::KQ4_mat(double q[5], double mat[4][4]) {
 
 void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 {
-	int X = this->getSpace()->getXsize();
-	int Y = this->getSpace()->getYsize();
-	int Z = this->getSpace()->getZsize();
+	int X = this->space->getXsize();
+	int Y = this->space->getYsize();
+	int Z = this->space->getZsize();
 
 	int k = k1.getZ();
 	int x0 = k1.getX();
@@ -934,10 +932,11 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 		dy = y0 - y1;
 	}
 
-	if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
-		&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) 
+	if (nr_ziarna != 0 && this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
+		&& this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getPhase() != Twin) 
 	{
-		this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+		this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+		this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setPhase(Twin);
 		//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
 	}
 
@@ -979,11 +978,12 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 				if (y > y1 || y < y0)
 					return;
 
-			if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
-	/*check*/			&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z] == 0) 
+			if (nr_ziarna != 0 && this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
+				&& this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getPhase() != Twin) 
 			{
-	/*tutaj [k]*/			this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
-							//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
+				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setPhase(Twin);
+				//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
 			}
 		}
 	}
@@ -1029,10 +1029,11 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 			//if(x >= X || y >= Y || y < 0 || x < 0)
 			//return; 
 
-			if (nr_ziarna != 0 && this->getSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
-				&& this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == 0) 
+			if (nr_ziarna != 0 && this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
+				&& this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getPhase() != Twin) 
 			{				
-				this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
+				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setPhase(Twin);
 				//cout <<"x: "<< (x + X) % X << " y: " << (y + Y) % Y << " z: "<< (k + Z) % Z << endl;
 			}
 		}
