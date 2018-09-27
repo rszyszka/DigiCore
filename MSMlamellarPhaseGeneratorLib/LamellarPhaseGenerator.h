@@ -2,7 +2,7 @@
 #include "../MSMcoreLib/Simulation.h"
 #include "../MSMcoreLib/Point.h"
 #include <math.h>
-#include "Grain.h"
+#include "StructureAngles.h"
 
 class LamellarPhaseGenerator : public Simulation
 {
@@ -13,8 +13,8 @@ private:
 
 	const double pi = acos(-1.0);
 
-	vector<Grain> grainsAngles;
-	vector<Grain> twinsAngles;
+	vector<StructureAngles> grainsAngles;
+	vector<StructureAngles> twinsAngles;
 
 	int grainIndex = 1;
 	int twinWidth;
@@ -44,7 +44,7 @@ public:
 	__declspec(dllexport) LamellarPhaseGenerator(Space *space, int twinWidth);
 	__declspec(dllexport) bool performStep() override;
 	__declspec(dllexport) int getProgress() override;
-	__declspec(dllexport) vector<Grain> getGrainsAngles();
-	__declspec(dllexport) vector<Grain> getTwinsAngles();
+	__declspec(dllexport) vector<StructureAngles> getGrainsAngles();
+	__declspec(dllexport) vector<StructureAngles> getTwinsAngles();
 	__declspec(dllexport) void computeAngles(double, int, int);
 };

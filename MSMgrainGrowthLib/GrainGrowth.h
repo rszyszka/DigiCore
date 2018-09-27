@@ -3,13 +3,13 @@
 
 class GrainGrowth : public Simulation 
 {
-private:
+protected:
 	Space *nextStepSpace;
 	int stepCounter;
 	int progress;
 
-	void updateSpace() const;
-	Cell* getMostFrequentValue(Cell** cells) const;
+	__declspec(dllexport) void updateSpace() const;
+	__declspec(dllexport) Cell* getMostFrequentValue(Cell** cells) const;
 public:
 	__declspec(dllexport) GrainGrowth(Space *space);
 	__declspec(dllexport) bool performStep() override;

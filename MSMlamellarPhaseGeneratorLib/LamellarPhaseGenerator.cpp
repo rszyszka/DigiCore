@@ -8,7 +8,7 @@ LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space, int twinWidth) : S
 	numberOfGrains = this->space->getMaxId();
 	this->twinWidth = twinWidth;
 
-	Grain a;
+	StructureAngles a;
 	grainsAngles.push_back(a); //id == 0;
 	twinsAngles.push_back(a); //id == 0;
 	for (int i = 1; i <= numberOfGrains; i++)
@@ -30,7 +30,7 @@ bool LamellarPhaseGenerator::performStep()
 	double alpha = rand() % 181;
 	//double alpha = 60;
 
-	Grain a;
+	StructureAngles a;
 	while (grainsAngles[grainIndex].childTwins < 3) {
 		twinsAngles.push_back(a);
 		grainsAngles[grainIndex].childTwins++;
@@ -495,8 +495,8 @@ bool LamellarPhaseGenerator::performStep()
 	return false;
 }
 
-vector<Grain> LamellarPhaseGenerator::getGrainsAngles() { return this->grainsAngles; }
-vector<Grain> LamellarPhaseGenerator::getTwinsAngles() { return this->twinsAngles; }
+vector<StructureAngles> LamellarPhaseGenerator::getGrainsAngles() { return this->grainsAngles; }
+vector<StructureAngles> LamellarPhaseGenerator::getTwinsAngles() { return this->twinsAngles; }
 
 void LamellarPhaseGenerator::computeAngles(double alpha, int grainId, int twinId)
 {

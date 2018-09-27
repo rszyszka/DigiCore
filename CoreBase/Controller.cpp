@@ -4,6 +4,7 @@
 #include <iostream>
 #include "McGrainGrowth.h"
 #include "GrainGrowth.h"
+#include "Titanium.h"
 #include "NucleonsGenerator.h"
 #include "Neighborhood2DVonNeumann.h"
 #include "Neighborhood3DVonNeumann.h"
@@ -40,7 +41,7 @@ void Controller::StartProcess()
 {
 	cout << "growing the grains..." << endl;
 	grainGrowth->simulateContinuously();
-	cout << "adding lammelar phase..." << endl;
+	cout << "adding lamellar phase..." << endl;
 	lamellarPhaseAddition->simulateContinuously();
 	circullarInclusionsAddition->simulateContinuously();
 }
@@ -60,7 +61,6 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 
 	lamellarPhaseAddition = new LamellarPhaseGenerator(space, 3);
 	circullarInclusionsAddition = new CircullarInclusionsAddition(space,4,4);
-
 }
 
 

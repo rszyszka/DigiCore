@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)MSMgrainGrowthLib;$(SolutionDir)MSMcoreLib;$(SolutionDir)MSMlamellarPhaseGeneratorLib;$(SolutionDir)MSMcircullarInclusionsGeneratorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)MSMgrainGrowthLib;$(SolutionDir)MSMcoreLib;$(SolutionDir)MSMlamellarPhaseGeneratorLib;$(SolutionDir)MSMcircullarInclusionsGeneratorLib;$(SolutionDir)MSMtitaniumLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -177,6 +177,9 @@
     </ProjectReference>
     <ProjectReference Include="..\MSMlamellarPhaseGeneratorLib\MSMlamellarPhaseGeneratorLib.vcxproj">
       <Project>{218a193d-e550-4c8a-9118-dc8671ea11b0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MSMtitaniumLib\MSMtitaniumLib.vcxproj">
+      <Project>{67060aac-6a1c-4ef3-8217-19bac28dd087}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

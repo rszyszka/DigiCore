@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSMlamellarPhaseGeneratorLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSMcircullarInclusionsGeneratorLib", "MSMcircullarInclusionsGeneratorLib\MSMcircullarInclusionsGeneratorLib.vcxproj", "{8A13D15B-6345-4653-A5C6-8E64AF20C3F1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSMtitaniumLib", "MSMtitaniumLib\MSMtitaniumLib.vcxproj", "{67060AAC-6A1C-4EF3-8217-19BAC28DD087}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -63,6 +65,14 @@ Global
 		{8A13D15B-6345-4653-A5C6-8E64AF20C3F1}.Release|x64.Build.0 = Release|x64
 		{8A13D15B-6345-4653-A5C6-8E64AF20C3F1}.Release|x86.ActiveCfg = Release|Win32
 		{8A13D15B-6345-4653-A5C6-8E64AF20C3F1}.Release|x86.Build.0 = Release|Win32
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Debug|x64.ActiveCfg = Debug|x64
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Debug|x64.Build.0 = Debug|x64
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Debug|x86.ActiveCfg = Debug|Win32
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Debug|x86.Build.0 = Debug|Win32
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Release|x64.ActiveCfg = Release|x64
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Release|x64.Build.0 = Release|x64
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Release|x86.ActiveCfg = Release|Win32
+		{67060AAC-6A1C-4EF3-8217-19BAC28DD087}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

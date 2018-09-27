@@ -9,5 +9,6 @@ enum Phase
 	Pearlite,
 	Liquid,
 	Inclusion,
-	Twin
+	Twin,
+	Beta
 };

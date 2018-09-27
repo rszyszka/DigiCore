@@ -1,6 +1,6 @@
 #pragma once
 
-class Grain {
+class StructureAngles {
 private:
 
 	const double pi;
@@ -15,8 +15,8 @@ public:
 	
 	unsigned int childTwins;
 
-	__declspec(dllexport) Grain();
-	__declspec(dllexport) ~Grain();
+	__declspec(dllexport) StructureAngles();
+	__declspec(dllexport) ~StructureAngles();
 	__declspec(dllexport) void setAngle1(double);
 	__declspec(dllexport) void setAngle2(double);
 	__declspec(dllexport) void setAngle3(double);
