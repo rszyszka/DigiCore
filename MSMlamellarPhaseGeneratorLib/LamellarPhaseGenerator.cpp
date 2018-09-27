@@ -810,6 +810,23 @@ void LamellarPhaseGenerator::KQ4_eul(double r[5], double ang[4]) {
 void LamellarPhaseGenerator::Keul_Q4(double euler[4], double q[5])
 {
 	double fpi = pi / 180.0;
+	double pi = acos(-1.0);
+	double fpi2 = fpi / 2.0;
+	double fi1 = euler[1] * fpi2;
+	double fi = euler[2] * fpi2;
+	double fi2 = euler[3] * fpi2;
+
+	//     :::::::::::::   corresponding quaternion:  :::::::::::: 
+	q[1] = cos(fi) * cos(fi1 + fi2);
+	q[2] = sin(fi) * cos(fi1 - fi2);
+	q[3] = sin(fi) * sin(fi1 - fi2);
+	q[4] = cos(fi) * sin(fi1 + fi2);
+	if (q[1] < 0.0) {
+		for (int i = 1; i <= 4; i++) {
+			q[i] = -q[i];
+		}
+	}
+
 }
 
 double LamellarPhaseGenerator::Karc(double si, double co) {
@@ -937,7 +954,6 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 	{
 		this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
 		this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setPhase(Twin);
-		//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
 	}
 
 	if (dx > dy) 
@@ -983,7 +999,6 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 			{
 				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
 				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setPhase(Twin);
-				//cout << "x: " << (x + X) % X << " y: " << (y + Y) % Y << " z: " << (k + Z) % Z << endl;
 			}
 		}
 	}
@@ -1026,21 +1041,15 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 			if (y1 > y0)
 				if (y > y1 || y < y0)
 					return;
-			//if(x >= X || y >= Y || y < 0 || x < 0)
-			//return; 
 
 			if (nr_ziarna != 0 && this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId() == nr_ziarna
 				&& this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getPhase() != Twin) 
 			{				
 				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setId(int(twinsAngles.size()) - 1);
 				this->space->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->setPhase(Twin);
-				//cout <<"x: "<< (x + X) % X << " y: " << (y + Y) % Y << " z: "<< (k + Z) % Z << endl;
 			}
 		}
 	}
-	/*
-	cout << "X: " << (x + X) % X << " Y: " << (y + Y) % Y << " Z: " << (k + Z) % Z << endl;
-	cout<<"ID: "<< this->getSecondPhaseSpace()->getCells()[(x + X) % X][(y + Y) % Y][(k + Z) % Z]->getId()<<endl;*/
 
 }
 
