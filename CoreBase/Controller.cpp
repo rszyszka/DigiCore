@@ -41,7 +41,7 @@ void Controller::StartProcess()
 {
 	cout << "growing the grains..." << endl;
 	grainGrowth->simulateContinuously();
-	cout << "adding lamellar phase..." << endl;
+	cout << "\nadding lamellar phase..." << endl;
 	lamellarPhaseAddition->simulateContinuously();
 	circullarInclusionsAddition->simulateContinuously();
 }

@@ -3,6 +3,17 @@
 Titanium::Titanium(Space * space) : GrainGrowth(space)
 {
 	spaceToRecover = new Space(this->space);
+
+	for (unsigned int i = 0; i < xSize; i++)
+	{
+		for (unsigned int j = 0; j < ySize; j++)
+		{
+			for (unsigned int k = 0; k < zSize; k++)
+			{
+				this->space->getCells()[i][j][k]->setCanGrowth(false);
+			}
+		}
+	}
 }
 
 bool Titanium::performStep()
