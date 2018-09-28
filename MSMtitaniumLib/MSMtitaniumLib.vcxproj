@@ -28,9 +28,6 @@
     <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">
       <Project>{cd753d6b-441e-4907-ad5a-6dd825407857}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\MSMgrainGrowthLib\MSMgrainGrowthLib.vcxproj">
-      <Project>{a4f25354-2714-4ca5-b28d-70ad447423b7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -108,7 +105,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)MSMgrainGrowthLib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
