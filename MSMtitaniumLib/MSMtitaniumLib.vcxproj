@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Grain.h" />
     <ClInclude Include="Titanium.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Grain.cpp" />
     <ClCompile Include="Titanium.cpp" />
   </ItemGroup>
   <ItemGroup>

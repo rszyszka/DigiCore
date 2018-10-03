@@ -3,6 +3,33 @@
 #include <ctime>
 #include <map>
 
+void Titanium::defineGrains()
+{
+	int maxId = space->getMaxId();
+	vector<Point*>* pointsVector = new vector<Point*>[maxId];
+	int index = 0;
+
+	for (unsigned int i = 0; i < xSize; i++)
+	{
+		for (unsigned int j = 0; j < ySize; j++)
+		{
+			for (unsigned int k = 0; k < zSize; k++)
+			{
+				Point* p = new Point(i, j, k);
+				auto cell = space->getCell(p);
+				index = cell->getId() - 1;
+				pointsVector[index].push_back(p);
+			}
+		}
+	}
+	
+	for (int i = 0; i < maxId; i++)
+	{
+		Grain grain(pointsVector[i], i + 1);
+		grains.push_back(grain);
+	}
+}
+
 void Titanium::updateSpace() const
 {
 	for (unsigned int i = 0; i<xSize; i++)
@@ -20,18 +47,19 @@ void Titanium::updateSpace() const
 	}
 }
 
-Cell * Titanium::getMostFrequentValue(Cell ** cells) const
+Cell * Titanium::getMostFrequentValue(Cell ** cells, Cell ** oldCells, int grainCellsId) const
 {
-
-	/* TODOOOO:
-
 	map<int, int> cellsOfGrainNr;
 
 	for (int i = 0; i < space->getNeighborhood()->getNeighboursSize(); i++)
 	{
+		if (oldCells[i]->getId() != grainCellsId)
+			continue;
+
 		auto id = cells[i]->getId();
+		auto phase = cells[i]->getPhase();
 		auto canGrowth = cells[i]->getCanGrowth();
-		if (id == 0 || !canGrowth)
+		if (phase == None || !canGrowth)
 			continue;
 
 		if (cellsOfGrainNr.find(id) != cellsOfGrainNr.end()) //already exists.. increment then
@@ -57,7 +85,7 @@ Cell * Titanium::getMostFrequentValue(Cell ** cells) const
 		if (cells[i]->getId() == IdOfMostCommonCounter)
 			return cells[i];
 	}
-	*/
+	
 	return nullptr;
 }
 
@@ -65,17 +93,6 @@ Titanium::Titanium(Space * space) : Simulation(space)
 {
 	spaceToRecover = new Space(this->space);
 	nextStepSpace = new Space(this->space);
-
-	for (unsigned int i = 0; i < xSize; i++)
-	{
-		for (unsigned int j = 0; j < ySize; j++)
-		{
-			for (unsigned int k = 0; k < zSize; k++)
-			{
-				this->space->getCells()[i][j][k]->setCanGrowth(false);
-			}
-		}
-	}
 }
 
 bool Titanium::performStep()
@@ -85,40 +102,34 @@ bool Titanium::performStep()
 	bool changed = false;
 	int progress_counter = 0;
 
-	Point *p = new Point(0, 0, 0);
+	for (Grain &grain : grains) {
+		for (int i = 0; i < space->getMaxId(); i++) {
 
-	for (unsigned int i = 0; i<xSize; i++)
-	{
-		for (unsigned int j = 0; j<ySize; j++)
-		{
-			for (unsigned int k = 0; k<zSize; k++)
+			Point* p = grain.getPoints[i];
+			Cell* cell_h = space->getCell(p);
+			int oldId = cell_h->getId();
+			Phase phase = cell_h->getPhase();
+
+			if (phase == None)
 			{
-				p->setXYZ(i, j, k);
+				Cell** neighbours = space->getNeighbours(p);
+				Cell** oldNeighbours = spaceToRecover->getNeighbours(p);
 
-				Cell* cell_h = space->getCell(p);
-				int oldId = cell_h->getId();
-				Phase phase = cell_h->getPhase();
+				auto newCell = getMostFrequentValue(neighbours, oldNeighbours, grain.getId());
 
-				if (phase == None)
-				{
-					Cell** neighbours = space->getNeighbours(p);
+				if (newCell->getPhase() == None)
+					continue;
 
-					auto newCell = getMostFrequentValue(neighbours);
+				nextStepSpace->getCell(p)->setId(newCell->getId());
+				nextStepSpace->getCell(p)->setPhase(newCell->getPhase());
+				nextStepSpace->getCell(p)->setIsBorder(newCell->getIsBorder());
+				nextStepSpace->getCell(p)->setCanGrowth(newCell->getCanGrowth());
+				nextStepSpace->getCell(p)->setBorderNeighboursIds(newCell->getBorderNeighboursIds());
 
-					if (newCell->getPhase() == None)
-						continue;
-
-					nextStepSpace->getCell(p)->setId(newCell->getId());
-					nextStepSpace->getCell(p)->setPhase(newCell->getPhase());
-					nextStepSpace->getCell(p)->setIsBorder(newCell->getIsBorder());
-					nextStepSpace->getCell(p)->setCanGrowth(newCell->getCanGrowth());
-					nextStepSpace->getCell(p)->setBorderNeighboursIds(newCell->getBorderNeighboursIds());
-
-					changed = true;
-				}
-				else
-					++progress_counter;
+				changed = true;
 			}
+			else
+				++progress_counter;
 		}
 	}
 
