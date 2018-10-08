@@ -10,15 +10,14 @@ class Space
 {
 private:
 	Neighborhood *neighborhood;
-
 	unsigned int xSize, ySize, zSize;
+	Cell ****cells; //[][][]
+	Cell** neighbours; //[]
+	int noOfNucleons = 0;
 
-	Cell** neighbours;
 	Cell**** getCellsCopy(Space *original) const;
 	void initializeCells() const;
 	void deleteCells() const;
-	Cell ****cells; //[][][]
-	int noOfNucleons = 0;
 
 public:
 	__declspec(dllexport) bool is3Dspace() const;

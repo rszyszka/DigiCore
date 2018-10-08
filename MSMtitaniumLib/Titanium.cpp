@@ -30,6 +30,53 @@ void Titanium::defineGrains()
 	}
 }
 
+void Titanium::growBetaPhaseGrains()
+{
+	bool changed = false;
+	do {
+		changed = false;
+		for (Grain &grain : grains) {
+			for (Point* p : grain.getPoints()) {
+
+				Cell* cell_h = space->getCell(p);
+				int oldId = cell_h->getId();
+				Phase phase = cell_h->getPhase();
+
+				if (phase == None)
+				{
+					Cell** neighbours = space->getNeighbours(p);
+					Cell** oldNeighbours = spaceToRecover->getNeighbours(p);
+					
+					auto newCell = getMostFrequentValue(neighbours, oldNeighbours, grain.getId());
+
+					if (newCell == nullptr)
+						continue;
+
+					nextStepSpace->getCell(p)->setId(newCell->getId());
+					nextStepSpace->getCell(p)->setPhase(newCell->getPhase());
+					nextStepSpace->getCell(p)->setIsBorder(newCell->getIsBorder());
+					nextStepSpace->getCell(p)->setCanGrowth(newCell->getCanGrowth());
+					nextStepSpace->getCell(p)->setBorderNeighboursIds(newCell->getBorderNeighboursIds());
+					
+					changed = true;
+				}
+			}
+		}
+		updateSpace();
+	} while (changed);
+}
+
+void Titanium::setSpaceToRecover(Space * spaceToRecover)
+{
+	this->spaceToRecover = new Space(spaceToRecover);
+	this->nextStepSpace = new Space(spaceToRecover);
+}
+
+void Titanium::setNextStepSpace(Space * space)
+{
+	this->nextStepSpace = new Space(space);
+}
+
 void Titanium::updateSpace() const
 {
 	for (unsigned int i = 0; i<xSize; i++)
@@ -91,53 +138,44 @@ Cell * Titanium::getMostFrequentValue(Cell ** cells, Cell ** oldCells, int grain
 
 Titanium::Titanium(Space * space) : Simulation(space)
 {
-	spaceToRecover = new Space(this->space);
-	nextStepSpace = new Space(this->space);
+	grainGrowth = new GrainGrowth(space);
+	//lamellarPhaseAddition = new LamellarPhaseGenerator(space, 3);
+	//circullarInclusionsAddition = new CircullarInclusionsAddition(space, 4, 4);
 }
 
 bool Titanium::performStep()
 {
-	//TODO:
+	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
+	nucleonsGenerator->putNucleonsRandomly(space, 5);
+	grainGrowth->simulateContinuously();
+	setSpaceToRecover(space);
+	defineGrains();
+	nucleonsGenerator->putNucleonsOfBetaPhaseRandomly(space, 10);
+	setNextStepSpace(space);
+	growBetaPhaseGrains();
 
-	bool changed = false;
-	int progress_counter = 0;
-
-	for (Grain &grain : grains) {
-		for (int i = 0; i < space->getMaxId(); i++) {
-
-			Point* p = grain.getPoints[i];
-			Cell* cell_h = space->getCell(p);
-			int oldId = cell_h->getId();
-			Phase phase = cell_h->getPhase();
-
-			if (phase == None)
+	//TEST
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getYsize(); i++)
+		{
+			for (int j = 0; j < space->getXsize(); j++)
 			{
-				Cell** neighbours = space->getNeighbours(p);
-				Cell** oldNeighbours = spaceToRecover->getNeighbours(p);
-
-				auto newCell = getMostFrequentValue(neighbours, oldNeighbours, grain.getId());
-
-				if (newCell->getPhase() == None)
-					continue;
-
-				nextStepSpace->getCell(p)->setId(newCell->getId());
-				nextStepSpace->getCell(p)->setPhase(newCell->getPhase());
-				nextStepSpace->getCell(p)->setIsBorder(newCell->getIsBorder());
-				nextStepSpace->getCell(p)->setCanGrowth(newCell->getCanGrowth());
-				nextStepSpace->getCell(p)->setBorderNeighboursIds(newCell->getBorderNeighboursIds());
-
-				changed = true;
+				cout << spaceToRecover->getCells()[j][i][k]->getId() << " ";
 			}
-			else
-				++progress_counter;
+			cout << endl;
 		}
+		cout << endl;
 	}
+	//END TEST
 
-	updateSpace();
 
-	progress = 100 * progress_counter / (xSize * ySize * zSize);
+	//TODO: 
+	//1. Add lamellar phase 
+	//2. Recover space info
+	//3. Add circullar inclusions if needed
 
-	return changed;
+	return false;
 }
 
 int Titanium::getProgress()

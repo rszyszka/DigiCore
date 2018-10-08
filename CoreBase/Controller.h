@@ -4,6 +4,7 @@
 #include "Simulation.h"
 #include "LamellarPhaseGenerator.h"
 #include "CircullarInclusionsAddition.h"
+#include "Titanium.h"
 #include "Space.h"
 
 class Controller
@@ -13,6 +14,7 @@ private:
 	Simulation * grainGrowth;
 	Simulation * lamellarPhaseAddition;
 	Simulation * circullarInclusionsAddition;
+	Simulation * titaniumGeneration;
 	random_device rd;
 
 public:

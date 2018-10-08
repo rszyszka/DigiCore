@@ -27,8 +27,17 @@
     <ClCompile Include="Titanium.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MSMcircullarInclusionsGeneratorLib\MSMcircullarInclusionsGeneratorLib.vcxproj">
+      <Project>{8a13d15b-6345-4653-a5c6-8e64af20c3f1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">
       <Project>{cd753d6b-441e-4907-ad5a-6dd825407857}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MSMgrainGrowthLib\MSMgrainGrowthLib.vcxproj">
+      <Project>{a4f25354-2714-4ca5-b28d-70ad447423b7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MSMlamellarPhaseGeneratorLib\MSMlamellarPhaseGeneratorLib.vcxproj">
+      <Project>{218a193d-e550-4c8a-9118-dc8671ea11b0}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

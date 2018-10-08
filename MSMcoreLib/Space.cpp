@@ -1,6 +1,7 @@
 #include "Space.h"
 #include <map>
 #include "../MSMcoreLib/Neighborhood2DCircular.h"
+#include <iostream>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ Space::Space()
 
 Space::~Space()
 {
+	delete[] *neighbours;
 	deleteCells();
 }
 
@@ -59,7 +61,8 @@ Space::Space(Space* original)
 	this->zSize = original->zSize;
 	this->cells = getCellsCopy(original);
 	neighborhood = original->neighborhood;
-	neighbours = original->neighbours;
+	neighbours = new Cell*[neighborhood->getNeighboursSize()];
+	//neighbours = original->neighbours;
 }
 
 void Space::initializeCells() const
@@ -197,7 +200,6 @@ Cell** Space::getNeighbours(Neighborhood* neighborhood, Point* p) const
 
 	for (int i = 0; i < neighbourhood_size; i++)
 		neighbours[i] = getCell(*(coords + i)); //coords[i]
-
 
 	return neighbours;
 }
