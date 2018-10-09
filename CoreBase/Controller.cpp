@@ -27,8 +27,6 @@ Controller::~Controller()
 {
 	delete space;
 	delete grainGrowth;
-	delete lamellarPhaseAddition;
-	delete circullarInclusionsAddition;
 	delete titaniumGeneration;
 }
 
@@ -39,83 +37,87 @@ Controller::Controller()
 
 void Controller::StartProcess()
 {
+	cout << "\ngrowing grains..." << endl;
+	grainGrowth->simulateContinuously();
 	cout << "\ngenerating titanium..." << endl;
 	titaniumGeneration->simulateContinuously();
-	//cout << "\nadding lamellar phase..." << endl;
-	//lamellarPhaseAddition->simulateContinuously();
-	//circullarInclusionsAddition->simulateContinuously();
 }
 
 void Controller::PrepareProcess(int* argc, char** argv[])
 {
-	int sizeX = 20;
-	int sizeY = 20;
-	int sizeZ = 1;
+	int sizeX = 100;
+	int sizeY = 100;
+	int sizeZ = 10;
 	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DMoore(sizeX, sizeY,sizeZ, Absorbent));
-	
-	//simulation = new McGrainGrowth(space, 10, 2, 0.3);
-	/*grainGrowth = new GrainGrowth(space);
-	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
-	nucleonsGenerator->putNucleonsRandomly(space, 9);
-	lamellarPhaseAddition = new LamellarPhaseGenerator(space, 3);
-	circullarInclusionsAddition = new CircullarInclusionsAddition(space,4,4);*/
 
-	titaniumGeneration = new Titanium(space);
+	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
+	nucleonsGenerator->putNucleonsRandomly(space, 5);
+	
+	grainGrowth = new GrainGrowth(space);
+
+	int twinWidth = 2;
+	int inclusionMaxRadius = 4;
+	int inclusionsCoverage = 5;
+	int betaPhaseNucleonsToPut = 20;
+	titaniumGeneration = new Titanium(space, twinWidth, inclusionMaxRadius, inclusionsCoverage, betaPhaseNucleonsToPut);
 }
 
 
 void Controller::CloseProcess()
 {
 	cout << "Finalize" << endl;
-
+	
+	//Just for test
+	ofstream out0("result.txt");
 	for (int k = 0; k < space->getZsize(); k++)
 	{
 		for (int i = 0; i < space->getYsize(); i++)
 		{
 			for (int j = 0; j < space->getXsize(); j++)
 			{
-				cout << space->getCells()[j][i][k]->getId() << " ";
+				out0 << space->getCells()[j][i][k]->getId() << " ";
 			}
-			cout << endl;
+			out0 << endl;
 		}
-		cout << endl;
+		out0 << endl;
 	}
-	
-	//Just for test
-	//ofstream out1("twins.txt");
-	//for (int k = 0; k < space->getZsize(); k++)
-	//{
-	//	for (int i = 0; i < space->getYsize(); i++)
-	//	{
-	//		for (int j = 0; j < space->getXsize(); j++)
-	//		{
-	//			if (space->getCells()[j][i][k]->getPhase() != Twin)
-	//				out1 << space->getCells()[j][i][k]->getId() << " ";
-	//			else
-	//				out1 << " " << " ";
-	//		}
-	//		out1 << endl;
-	//	}
-	//	out1 << endl;
-	//}
-	//out1.close();
+	out0.close();
 
-	//ofstream out("inclusions.txt");
-	//for (int k = 0; k < space->getZsize(); k++)
-	//{
-	//	for (int i = 0; i < space->getYsize(); i++)
-	//	{
-	//		for (int j = 0; j < space->getXsize(); j++)
-	//		{
-	//			if (space->getCells()[j][i][k]->getPhase() == Inclusion)
-	//				out << 1 << " ";
-	//			else
-	//				out << 0 << " ";
-	//		}
-	//		out << endl;
-	//	}
-	//	out << endl;
-	//}
-	//out.close();
+
+	ofstream out1("twins.txt");
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getYsize(); i++)
+		{
+			for (int j = 0; j < space->getXsize(); j++)
+			{
+				if (space->getCells()[j][i][k]->getPhase() == Twin)
+					out1 << space->getCells()[j][i][k]->getId() << " ";
+				else
+					out1 << " " << " ";
+			}
+			out1 << endl;
+		}
+		out1 << endl;
+	}
+	out1.close();
+
+	ofstream out("inclusions.txt");
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getYsize(); i++)
+		{
+			for (int j = 0; j < space->getXsize(); j++)
+			{
+				if (space->getCells()[j][i][k]->getPhase() == Inclusion)
+					out << 1 << " ";
+				else
+					out << 0 << " ";
+			}
+			out << endl;
+		}
+		out << endl;
+	}
+	out.close();
 	getchar();
 }

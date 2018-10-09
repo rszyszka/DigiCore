@@ -10,9 +10,12 @@ class Titanium : public Simulation
 {
 private:
 
-	Simulation * grainGrowth;
 	Simulation * lamellarPhaseAddition;
 	Simulation * circullarInclusionsAddition;
+
+	int twinWidth;
+	int inclusionMaxRadius, inclusionsCoverage;
+	int betaPhaseNucleonsToPut;
 
 	vector<Grain> grains;
 	Space* spaceToRecover;
@@ -22,12 +25,14 @@ private:
 
 	void defineGrains();
 	void growBetaPhaseGrains();
+	void recoverSpace();
 	void setSpaceToRecover(Space*);
 	void setNextStepSpace(Space*);
 	void updateSpace() const;
 	Cell* getMostFrequentValue(Cell** cells, Cell** oldCells, int grainCellsId) const;
 public:
 	__declspec(dllexport) Titanium(Space *space);
+	__declspec(dllexport) Titanium(Space *space, int twinWidth, int inclusionMaxRadius, int inclusionsCoverage, int betaPhaseNucleonsToPut);
 	__declspec(dllexport) bool performStep() override;
 	__declspec(dllexport) int getProgress() override;
 };

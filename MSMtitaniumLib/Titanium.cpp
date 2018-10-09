@@ -64,12 +64,39 @@ void Titanium::growBetaPhaseGrains()
 		}
 		updateSpace();
 	} while (changed);
+
+	//if there is any grain without beta phase set it should be updated now
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getYsize(); i++)
+		{
+			for (int j = 0; j < space->getXsize(); j++)
+			{
+				space->getCells()[j][i][k]->setPhase(Beta);
+			}
+		}
+	}
+
+}
+
+void Titanium::recoverSpace()
+{
+	for (int k = 0; k < space->getZsize(); k++)
+	{
+		for (int i = 0; i < space->getYsize(); i++)
+		{
+			for (int j = 0; j < space->getXsize(); j++)
+			{
+				int id = spaceToRecover->getCells()[i][j][k]->getId();
+				space->getCells()[i][j][k]->setId(id);
+			}
+		}
+	}
 }
 
 void Titanium::setSpaceToRecover(Space * spaceToRecover)
 {
 	this->spaceToRecover = new Space(spaceToRecover);
-	this->nextStepSpace = new Space(spaceToRecover);
 }
 
 void Titanium::setNextStepSpace(Space * space)
@@ -138,42 +165,41 @@ Cell * Titanium::getMostFrequentValue(Cell ** cells, Cell ** oldCells, int grain
 
 Titanium::Titanium(Space * space) : Simulation(space)
 {
-	grainGrowth = new GrainGrowth(space);
-	//lamellarPhaseAddition = new LamellarPhaseGenerator(space, 3);
-	//circullarInclusionsAddition = new CircullarInclusionsAddition(space, 4, 4);
+	twinWidth = 2;
+	inclusionMaxRadius = 4;
+	inclusionsCoverage = 4;
+	betaPhaseNucleonsToPut = 20;
+
+	circullarInclusionsAddition = new CircullarInclusionsAddition(space, inclusionMaxRadius, inclusionsCoverage);
+}
+
+Titanium::Titanium(Space * space, int twinWidth, int inclusionMaxRadius, int inclusionsCoverage, int betaPhaseNucleonsToPut) : Simulation(space)
+{
+	this->twinWidth = twinWidth;
+	this->inclusionMaxRadius = inclusionMaxRadius;
+	this->inclusionsCoverage = inclusionsCoverage;
+	this->betaPhaseNucleonsToPut = betaPhaseNucleonsToPut;
+
+	circullarInclusionsAddition = new CircullarInclusionsAddition(space, inclusionMaxRadius, inclusionsCoverage);
 }
 
 bool Titanium::performStep()
 {
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
-	nucleonsGenerator->putNucleonsRandomly(space, 5);
-	grainGrowth->simulateContinuously();
+
 	setSpaceToRecover(space);
 	defineGrains();
-	nucleonsGenerator->putNucleonsOfBetaPhaseRandomly(space, 10);
+	nucleonsGenerator->putNucleonsOfBetaPhaseRandomly(space, betaPhaseNucleonsToPut);
+
 	setNextStepSpace(space);
 	growBetaPhaseGrains();
 
-	//TEST
-	for (int k = 0; k < space->getZsize(); k++)
-	{
-		for (int i = 0; i < space->getYsize(); i++)
-		{
-			for (int j = 0; j < space->getXsize(); j++)
-			{
-				cout << spaceToRecover->getCells()[j][i][k]->getId() << " ";
-			}
-			cout << endl;
-		}
-		cout << endl;
-	}
-	//END TEST
+	lamellarPhaseAddition = new LamellarPhaseGenerator(space, twinWidth);
+	lamellarPhaseAddition->simulateContinuously();
 
+	recoverSpace();
 
-	//TODO: 
-	//1. Add lamellar phase 
-	//2. Recover space info
-	//3. Add circullar inclusions if needed
+	circullarInclusionsAddition->simulateContinuously();
 
 	return false;
 }

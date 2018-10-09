@@ -18,21 +18,8 @@ CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space, int radi
 bool CircullarInclusionsAddition::performStep()
 {
 
-	if (!this->space->is3Dspace()) {
-		cout << "2D SIMULATION" << endl;
-		cout << "step1 - setUnmixedGrid..." << endl;
-		setUnmixedGrid2D();
-		cout << "step2 - addMinimumAmountOfCircles..." << endl;
-		addMinimumAmountOfCircles();
-		cout << "step3 - adjustSurface ..." << endl;
-		adjustSurface();
-		cout << "step4 - mixBalls..." << endl;
-		mixBalls2D();
-		cout << "step5 - fillSpace..." << endl;
-		fill2dSpace();
-		cout << "DONE!" << endl;
-	}
-	else {
+	if (this->space->is3Dspace()) {
+
 		cout << "3D SIMULATION" << endl;
 		cout << "step1 - setUnmixedGrid..." << endl;
 		setUnmixedGrid3D();
@@ -44,6 +31,21 @@ bool CircullarInclusionsAddition::performStep()
 		//reduceBalls3D();
 		cout << "step5 - fillSpace..." << endl;
 		fill3dSpace();
+		cout << "DONE!" << endl;
+	}
+	else {
+
+		cout << "2D SIMULATION" << endl;
+		cout << "step1 - setUnmixedGrid..." << endl;
+		setUnmixedGrid2D();
+		cout << "step2 - addMinimumAmountOfCircles..." << endl;
+		addMinimumAmountOfCircles();
+		cout << "step3 - adjustSurface ..." << endl;
+		adjustSurface();
+		cout << "step4 - mixBalls..." << endl;
+		mixBalls2D();
+		cout << "step5 - fillSpace..." << endl;
+		fill2dSpace();
 		cout << "DONE!" << endl;
 	}
 

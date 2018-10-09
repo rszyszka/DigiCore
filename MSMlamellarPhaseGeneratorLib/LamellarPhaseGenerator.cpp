@@ -5,19 +5,10 @@
 LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space, int twinWidth) : Simulation(space)
 {
 	srand(time(nullptr));
-	numberOfGrains = this->space->getMaxId();
 	this->twinWidth = twinWidth;
-
-	StructureAngles a;
-	grainsAngles.push_back(a); //id == 0;
-	twinsAngles.push_back(a); //id == 0;
-	for (int i = 1; i <= numberOfGrains; i++)
-	{
-		grainsAngles.push_back(a);
-	}
+	defineStructureAngles();
 
 	progress = 100 / (xSize * ySize * zSize);
-
 }
 
 int LamellarPhaseGenerator::getProgress()
@@ -28,7 +19,6 @@ int LamellarPhaseGenerator::getProgress()
 bool LamellarPhaseGenerator::performStep()
 {
 	double alpha = rand() % 181;
-	//double alpha = 60;
 
 	StructureAngles a;
 	while (grainsAngles[grainIndex].childTwins < 3) {
@@ -915,6 +905,21 @@ void LamellarPhaseGenerator::KQ4_mat(double q[5], double mat[4][4]) {
 	}
 }
 
+void LamellarPhaseGenerator::defineStructureAngles()
+{
+	numberOfGrains = this->space->getMaxId();
+	grainsAngles.clear();
+	twinsAngles.clear();
+	StructureAngles a;
+	grainsAngles.push_back(a); //id == 0;
+	twinsAngles.push_back(a); //id == 0;
+	for (int i = 1; i <= numberOfGrains; i++)
+	{
+		grainsAngles.push_back(a);
+	}
+
+}
+
 void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 {
 	int X = this->space->getXsize();
@@ -1052,4 +1057,3 @@ void LamellarPhaseGenerator::midpointLine(Point k1, Point k2, int nr_ziarna)
 	}
 
 }
-

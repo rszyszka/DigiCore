@@ -12,8 +12,6 @@ class Controller
 private:
 	Space * space;
 	Simulation * grainGrowth;
-	Simulation * lamellarPhaseAddition;
-	Simulation * circullarInclusionsAddition;
 	Simulation * titaniumGeneration;
 	random_device rd;
 
