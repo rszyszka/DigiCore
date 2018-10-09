@@ -3,7 +3,7 @@
 #include <ctime>
 #include <map>
 
-void Titanium::defineGrains()
+void Titanium::initializeGrains()
 {
 	int maxId = space->getMaxId();
 	vector<Point*>* pointsVector = new vector<Point*>[maxId];
@@ -188,7 +188,7 @@ bool Titanium::performStep()
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
 
 	setSpaceToRecover(space);
-	defineGrains();
+	initializeGrains();
 	nucleonsGenerator->putNucleonsOfBetaPhaseRandomly(space, betaPhaseNucleonsToPut);
 
 	setNextStepSpace(space);

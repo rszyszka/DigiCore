@@ -6,7 +6,7 @@ LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space, int twinWidth) : S
 {
 	srand(time(nullptr));
 	this->twinWidth = twinWidth;
-	defineStructureAngles();
+	initializeStructureAngles();
 
 	progress = 100 / (xSize * ySize * zSize);
 }
@@ -905,7 +905,7 @@ void LamellarPhaseGenerator::KQ4_mat(double q[5], double mat[4][4]) {
 	}
 }
 
-void LamellarPhaseGenerator::defineStructureAngles()
+void LamellarPhaseGenerator::initializeStructureAngles()
 {
 	numberOfGrains = this->space->getMaxId();
 	grainsAngles.clear();

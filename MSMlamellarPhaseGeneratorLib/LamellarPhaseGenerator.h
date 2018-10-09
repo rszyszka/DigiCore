@@ -25,7 +25,7 @@ private:
 	void KQ4mult(int, double*, double*);
 	void KQ4_mat(double q[5], double mat[4][4]);
 
-	void defineStructureAngles();
+	void initializeStructureAngles();
 	void midpointLine(Point, Point, int);
 
 	int getLimitX1(int);

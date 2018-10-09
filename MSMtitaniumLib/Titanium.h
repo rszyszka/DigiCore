@@ -23,7 +23,7 @@ private:
 	int stepCounter;
 	int progress;
 
-	void defineGrains();
+	void initializeGrains();
 	void growBetaPhaseGrains();
 	void recoverSpace();
 	void setSpaceToRecover(Space*);
