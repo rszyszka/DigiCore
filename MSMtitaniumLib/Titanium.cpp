@@ -87,6 +87,8 @@ void Titanium::recoverSpace()
 		{
 			for (int j = 0; j < space->getXsize(); j++)
 			{
+				if (space->getCells[i][j][k]->getPhase() == Twin)
+					continue;
 				int id = spaceToRecover->getCells()[i][j][k]->getId();
 				space->getCells()[i][j][k]->setId(id);
 			}
