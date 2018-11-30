@@ -7,7 +7,8 @@ CircullarInclusionsAddition::CircullarInclusionsAddition(Space * space, int radi
 	srand(time(nullptr));
 
 	this->radius = radius;
-	desiredSurface = (int)(10 * xSize * ySize / (double)100);
+	desiredSurface = desiredVolume == 0 ? desiredVolume : xSize * ySize * desiredVolume * 0.01;
+	//desiredSurface = (int)(10 * xSize * ySize / (double)100);
 	this->desiredVolume = desiredVolume;
 
 	this->surface = new Surface(radius, xSize, ySize);

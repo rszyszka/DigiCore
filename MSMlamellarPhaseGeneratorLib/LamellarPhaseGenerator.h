@@ -17,7 +17,7 @@ private:
 	vector<StructureAngles> twinsAngles;
 
 	int grainIndex = 1;
-	int twinWidth;
+	int maxTwinWidth;
 
 	void KQ4_eul(double r[5], double ang[4]);
 	void Keul_Q4(double euler[4], double q[5]);

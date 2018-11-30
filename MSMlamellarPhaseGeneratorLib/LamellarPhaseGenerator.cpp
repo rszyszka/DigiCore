@@ -5,7 +5,7 @@
 LamellarPhaseGenerator::LamellarPhaseGenerator(Space * space, int twinWidth) : Simulation(space)
 {
 	srand(time(nullptr));
-	this->twinWidth = twinWidth;
+	this->maxTwinWidth = twinWidth;
 	initializeStructureAngles();
 
 	progress = 100 / (xSize * ySize * zSize);
@@ -22,6 +22,9 @@ bool LamellarPhaseGenerator::performStep()
 
 	StructureAngles a;
 	while (grainsAngles[grainIndex].childTwins < 3) {
+
+		int twinWidth = rand() % maxTwinWidth + 1;
+
 		twinsAngles.push_back(a);
 		grainsAngles[grainIndex].childTwins++;
 

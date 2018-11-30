@@ -194,6 +194,7 @@ bool Titanium::performStep()
 	nucleonsGenerator->putNucleonsOfBetaPhaseRandomly(space, betaPhaseNucleonsToPut);
 
 	setNextStepSpace(space);
+	cout << "Growing beta phase grains..." << endl;
 	growBetaPhaseGrains();
 
 	lamellarPhaseAddition = new LamellarPhaseGenerator(space, twinWidth);
