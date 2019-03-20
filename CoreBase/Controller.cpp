@@ -49,7 +49,7 @@ void Controller::PrepareProcess(int* argc, char** argv[])
 	int sizeX = 500;
 	int sizeY = 500;
 	int sizeZ = 1;
-	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DPentagonal(sizeX, sizeY,sizeZ, Absorbent));
+	space = new Space(sizeX, sizeY, sizeZ, new Neighborhood3DMoore(sizeX, sizeY,sizeZ, Periodic));
 
 	NucleonsGenerator* nucleonsGenerator = new NucleonsGenerator();
 	nucleonsGenerator->putNucleonsRandomly(space, 10);
