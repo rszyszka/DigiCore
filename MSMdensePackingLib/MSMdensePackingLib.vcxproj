@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -18,41 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BallSchema2D.h" />
-    <ClInclude Include="CircullarInclusionsAddition.h" />
-    <ClInclude Include="Direction.h" />
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="Surface.h" />
-    <ClInclude Include="Volume.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BallSchema2D.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="CircullarInclusionsAddition.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Surface.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Volume.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">
-      <Project>{cd753d6b-441e-4907-ad5a-6dd825407857}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{8A13D15B-6345-4653-A5C6-8E64AF20C3F1}</ProjectGuid>
+    <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MSMcircullarInclusionsGeneratorLib</RootNamespace>
+    <ProjectGuid>{4fbb0bd3-2884-460e-9b14-38c252959f4f}</ProjectGuid>
+    <RootNamespace>MSMdensePackingLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -100,82 +70,165 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;MSMCIRCULLARINCLUSIONSGENERATORLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;MSMCIRCULLARINCLUSIONSGENERATORLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;MSMDENSEPACKINGLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;MSMCIRCULLARINCLUSIONSGENERATORLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;MSMDENSEPACKINGLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;MSMDENSEPACKINGLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;MSMCIRCULLARINCLUSIONSGENERATORLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;MSMDENSEPACKINGLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSMcoreLib\MSMcoreLib.vcxproj">
+      <Project>{cd753d6b-441e-4907-ad5a-6dd825407857}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbstractSphereGenerator.h" />
+    <ClInclude Include="Bin.h" />
+    <ClInclude Include="BinObject.h" />
+    <ClInclude Include="BoundaryHoleFinderHelper3D.h" />
+    <ClInclude Include="CirclesInCornersInitialConfiguration.h" />
+    <ClInclude Include="Coords.h" />
+    <ClInclude Include="DensePackingSimulation.h" />
+    <ClInclude Include="ForEachMinDistance.h" />
+    <ClInclude Include="Gravity.h" />
+    <ClInclude Include="GravityXY.h" />
+    <ClInclude Include="GravityXZ.h" />
+    <ClInclude Include="GravityYZ.h" />
+    <ClInclude Include="GreedyPacker.h" />
+    <ClInclude Include="GreedyPackingSimulation.h" />
+    <ClInclude Include="Hole.h" />
+    <ClInclude Include="HolesFinder.h" />
+    <ClInclude Include="HolesFinder2D.h" />
+    <ClInclude Include="HolesFinder3D.h" />
+    <ClInclude Include="InitialConfiguration.h" />
+    <ClInclude Include="LargestSphereGenerator.h" />
+    <ClInclude Include="MinDistance.h" />
+    <ClInclude Include="OneCornerSphereInitialConfiguration.h" />
+    <ClInclude Include="OscillatingSphereGenerator.h" />
+    <ClInclude Include="PenaltyType.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="RandomSphereGenerator.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SpaceFiller.h" />
+    <ClInclude Include="SphereCollision.h" />
+    <ClInclude Include="SphereCollision2D.h" />
+    <ClInclude Include="SphereCollision3D.h" />
+    <ClInclude Include="SphereGenerator.h" />
+    <ClInclude Include="SphereMixingSimulation.h" />
+    <ClInclude Include="SphereMixingSimulation2D.h" />
+    <ClInclude Include="SphereMixingSimulation3D.h" />
+    <ClInclude Include="TangentialCirclesInitialConfiguration.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Velocity.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AbstractSphereGenerator.cpp" />
+    <ClCompile Include="Bin.cpp" />
+    <ClCompile Include="BoundaryHoleFinderHelper3D.cpp" />
+    <ClCompile Include="CirclesInCornersInitialConfiguration.cpp" />
+    <ClCompile Include="Coords.cpp" />
+    <ClCompile Include="DensePackingSimulation.cpp" />
+    <ClCompile Include="ForEachMinDistance.cpp" />
+    <ClCompile Include="Gravity.cpp" />
+    <ClCompile Include="GreedyPacker.cpp" />
+    <ClCompile Include="GreedyPackingSimulation.cpp" />
+    <ClCompile Include="Hole.cpp" />
+    <ClCompile Include="HolesFinder.cpp" />
+    <ClCompile Include="HolesFinder2D.cpp" />
+    <ClCompile Include="HolesFinder3D.cpp" />
+    <ClCompile Include="InitialConfiguration.cpp" />
+    <ClCompile Include="LargestSphereGenerator.cpp" />
+    <ClCompile Include="OneCornerSphereInitialConfiguration.cpp" />
+    <ClCompile Include="OscillatingSphereGenerator.cpp" />
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="RandomSphereGenerator.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="SpaceFiller.cpp" />
+    <ClCompile Include="SphereCollision.cpp" />
+    <ClCompile Include="SphereCollision2D.cpp" />
+    <ClCompile Include="SphereCollision3D.cpp" />
+    <ClCompile Include="SphereMixingSimulation.cpp" />
+    <ClCompile Include="SphereMixingSimulation2D.cpp" />
+    <ClCompile Include="SphereMixingSimulation3D.cpp" />
+    <ClCompile Include="TangentialCirclesInitialConfiguration.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Velocity.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

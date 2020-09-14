@@ -6,13 +6,14 @@
 #include "CircullarInclusionsAddition.h"
 #include "Titanium.h"
 #include "Space.h"
+#include "Bin.h"
 
 class Controller
 {
 private:
-	Space * space;
-	Simulation * grainGrowth;
-	Simulation * titaniumGeneration;
+	Bin* bin;
+	Space* space;
+	Simulation* simulation;
 	random_device rd;
 
 public:

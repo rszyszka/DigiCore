@@ -39,6 +39,7 @@ void IOStreamer::LoadSpace(Space* space, string path)
 	ifstream infile(path);
 	string line;
 	string commentary = "//";
+	getline(infile, line); //ignore space size
 	while (getline(infile, line))
 	{
 		if (line.substr(0, commentary.size()) == commentary) continue;
@@ -53,8 +54,8 @@ void IOStreamer::LoadSpace(Space* space, string path)
 		Cell * c = space->getCell(p);
 
 		c->setId(stoi(result.at(3)));
-		c->setPhase(static_cast<Phase>(stoi(result.at(4))));
-		c->setIsBorder(stoi(result.at(5)));
-		c->setCanGrowth(stoi(result.at(6)));
+		//c->setPhase(static_cast<Phase>(stoi(result.at(4))));
+		//c->setIsBorder(stoi(result.at(5)));
+		//c->setCanGrowth(stoi(result.at(6)));
 	}
 }
